@@ -26,26 +26,30 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	if (argc != 3)
+	auto args = ParseArgs(argc, argv);
+	// Проверка правильности аргументов командной строки
+	if (!args)
 	{
 		std::cout << "Invalid arguments count\n";
-		std::cout << "Usage: CopyFile.exe <input>";
+		std::cout << "Usage: CopyFile.exe <input file name> <output file name>\n";
 		return 1;
 	}
 
+	// Открываем входной файл
 	std::ifstream input;
-	input.open(argv[1]);
+	input.open(args->inputFileName);
 	if (!input.is_open())
 	{
-		std::cout << "Failed to open '" << argv[1] << "' for reading\n";
+		std::cout << "Failed to open '" << args->inputFileName << "' for reading\n";
 		return 1;
 	}
 
+	// Открываем выходной файл
 	std::ofstream output;
-	output.open(argv[2]);
+	output.open(args->outputFileName);
 	if (!output.is_open())
 	{
-		std::cout << "Failed to open '" << argv[2] << "' for writing\n";
+		std::cout << "Failed to open '" << args->outputFileName << "' for writing\n";
 		return 1;
 	}
 
