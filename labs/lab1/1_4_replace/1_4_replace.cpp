@@ -3,6 +3,26 @@
 
 #include <iostream>
 #include <fstream>
+#include <optional>
+#include <string>
+
+struct Args
+{
+	std::string inputFileName;
+	std::string outputFileName;
+};
+
+std::optional<Args> ParseArgs(int argc, char* argv[])
+{
+	if (argc != 3)
+	{
+		return std::nullopt;
+	}
+	Args args;
+	args.inputFileName = argv[1];
+	args.outputFileName = argv[2];
+	return args;
+}
 
 int main(int argc, char* argv[])
 {
@@ -32,7 +52,22 @@ int main(int argc, char* argv[])
 	char ch;
 	while (input.get(ch))
 	{
-		output.put(ch);
+		if (!output.put(ch))
+		{
+			break;
+		}
+	}
+
+	if (input.bad())
+	{
+		std::cout << "Failed to read data from input file";
+		return 1;
+	}
+
+	if (!output.flush())
+	{
+		std::cout << "Failed to write data to output file\n";
+		return 1;
 	}
 
 	return 0;
