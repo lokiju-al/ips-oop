@@ -146,8 +146,9 @@
     <ClCompile Include="1_4_replace.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Empty.txt" />
+    <Text Include="EmptyFile.txt" />
     <Text Include="input.txt" />
+    <Text Include="NotEmptyFile.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1_4_replace.h" />

@@ -21,7 +21,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt" />
-    <Text Include="Empty.txt" />
+    <Text Include="EmptyFile.txt" />
+    <Text Include="NotEmptyFile.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1_4_replace.h">
