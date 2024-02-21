@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	// Открываем входной файл
+	// Открываем входной файл для чтения
 	std::ifstream input;
 	input.open(args->inputFileName);
 	if (!input.is_open())
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	// Открываем выходной файл
+	// Открываем выходной файл для записи
 	std::ofstream output;
 	output.open(args->outputFileName);
 	if (!output.is_open())
