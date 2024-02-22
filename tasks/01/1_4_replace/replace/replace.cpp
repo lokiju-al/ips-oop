@@ -23,24 +23,24 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 	return args;
 }
 /*
-// Возвращает результат замены всех вхождений строки searchString внутри строки subject на replacementString
-// Если строка searchString пустая, то возвращается subject
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ СЂРµР·СѓР»СЊС‚Р°С‚ Р·Р°РјРµРЅС‹ РІСЃРµС… РІС…РѕР¶РґРµРЅРёР№ СЃС‚СЂРѕРєРё searchString РІРЅСѓС‚СЂРё СЃС‚СЂРѕРєРё subject РЅР° replacementString
+// Р•СЃР»Рё СЃС‚СЂРѕРєР° searchString РїСѓСЃС‚Р°СЏ, С‚Рѕ РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ subject
 std::string ReplaceString(const std::string& subject,
 	const std::string& searchString, const std::string& replacementString)
 {
 	size_t pos = 0;
-	// Результат будет записан в новую строку result, оставляя строку subject неизменной
-	// Какие преимущества есть у этого способа по сравнению с алгоритмом, выполняющим
-	// замену прямо в строке subject?
+	// Р РµР·СѓР»СЊС‚Р°С‚ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅ РІ РЅРѕРІСѓСЋ СЃС‚СЂРѕРєСѓ result, РѕСЃС‚Р°РІР»СЏСЏ СЃС‚СЂРѕРєСѓ subject РЅРµРёР·РјРµРЅРЅРѕР№
+	// РљР°РєРёРµ РїСЂРµРёРјСѓС‰РµСЃС‚РІР° РµСЃС‚СЊ Сѓ СЌС‚РѕРіРѕ СЃРїРѕСЃРѕР±Р° РїРѕ СЃСЂР°РІРЅРµРЅРёСЋ СЃ Р°Р»РіРѕСЂРёС‚РјРѕРј, РІС‹РїРѕР»РЅСЏСЋС‰РёРј
+	// Р·Р°РјРµРЅСѓ РїСЂСЏРјРѕ РІ СЃС‚СЂРѕРєРµ subject?
 	std::string result;
 	while (pos < subject.length())
 	{
-		// Находим позицию искомой строки, начиная с pos
+		// РќР°С…РѕРґРёРј РїРѕР·РёС†РёСЋ РёСЃРєРѕРјРѕР№ СЃС‚СЂРѕРєРё, РЅР°С‡РёРЅР°СЏ СЃ pos
 		size_t foundPos = subject.find(searchString, pos);
-		// В результирующую строку записываем текст из диапазона [pos,foundPos)
+		// Р’ СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰СѓСЋ СЃС‚СЂРѕРєСѓ Р·Р°РїРёСЃС‹РІР°РµРј С‚РµРєСЃС‚ РёР· РґРёР°РїР°Р·РѕРЅР° [pos,foundPos)
 		result.append(subject, pos, foundPos - pos);
 
-		// Напишите недостающий код самостоятельно, чтобы функция работала корректно
+		// РќР°РїРёС€РёС‚Рµ РЅРµРґРѕСЃС‚Р°СЋС‰РёР№ РєРѕРґ СЃР°РјРѕСЃС‚РѕСЏС‚РµР»СЊРЅРѕ, С‡С‚РѕР±С‹ С„СѓРЅРєС†РёСЏ СЂР°Р±РѕС‚Р°Р»Р° РєРѕСЂСЂРµРєС‚РЅРѕ
 	}
 	return result;
 }
@@ -58,7 +58,7 @@ void CopyStreamWithReplacement(std::istream& input, std::ostream& output,
 
 void CopyStreams(std::ifstream& input, std::ofstream& output)
 {
-	// Копируем входной файл в выходной
+	// РљРѕРїРёСЂСѓРµРј РІС…РѕРґРЅРѕР№ С„Р°Р№Р» РІ РІС‹С…РѕРґРЅРѕР№
 	char ch;
 	while (input.get(ch))
 	{
@@ -72,13 +72,13 @@ void CopyStreams(std::ifstream& input, std::ofstream& output)
 int main(int argc, char* argv[])
 {
 	auto args = ParseArgs(argc, argv);
-	// Проверка правильности аргументов командной строки
+	// РџСЂРѕРІРµСЂРєР° РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё Р°СЂРіСѓРјРµРЅС‚РѕРІ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё
 	if (!args)
 	{
 		return 1;
 	}
 
-	// Открываем входной файл для чтения
+	// РћС‚РєСЂС‹РІР°РµРј РІС…РѕРґРЅРѕР№ С„Р°Р№Р» РґР»СЏ С‡С‚РµРЅРёСЏ
 	std::ifstream input;
 	input.open(args->inputFileName);
 	if (!input.is_open())
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	// Открываем выходной файл для записи
+	// РћС‚РєСЂС‹РІР°РµРј РІС‹С…РѕРґРЅРѕР№ С„Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё
 	std::ofstream output;
 	output.open(args->outputFileName);
 	if (!output.is_open())
