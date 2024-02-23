@@ -7,40 +7,49 @@ struct Args
 {
 	std::string inputFileName;
 	std::string outputFileName;
+	std::string searchString;
+	std::string replacementString;
 };
 
 std::optional<Args> ParseArgs(int argc, char* argv[])
 {
-	if (argc != 3)
+	if (argc != 5)
 	{
 		std::cout << "Invalid arguments count\n";
-		std::cout << "Usage: replace.exe <input file name> <output file name>\n";
+		std::cout << "Usage: replace.exe <input file> <output file> <search string> <replace string>\n";
 		return std::nullopt;
 	}
 	Args args;
 	args.inputFileName = argv[1];
 	args.outputFileName = argv[2];
+	args.searchString = argv[3];
+	args.replacementString = argv[4];
 	return args;
 }
-/*
+
 // Возвращает результат замены всех вхождений строки searchString внутри строки subject на replacementString
 // Если строка searchString пустая, то возвращается subject
 std::string ReplaceString(const std::string& subject,
 	const std::string& searchString, const std::string& replacementString)
 {
 	size_t pos = 0;
+	size_t foundPos;
 	// Результат будет записан в новую строку result, оставляя строку subject неизменной
-	// Какие преимущества есть у этого способа по сравнению с алгоритмом, выполняющим
-	// замену прямо в строке subject?
 	std::string result;
 	while (pos < subject.length())
 	{
 		// Находим позицию искомой строки, начиная с pos
-		size_t foundPos = subject.find(searchString, pos);
-		// В результирующую строку записываем текст из диапазона [pos,foundPos)
-		result.append(subject, pos, foundPos - pos);
-
-		// Напишите недостающий код самостоятельно, чтобы функция работала корректно
+		if (foundPos = subject.find(searchString, pos))
+		{
+			// В результирующую строку записываем текст из диапазона [pos,foundPos)
+			result.append(subject, pos, foundPos - pos);
+			result.append(replacementString);
+			pos += searchString.length();
+		}
+		else
+		{
+			break;
+		}
 	}
 	return result;
 }
@@ -48,15 +57,15 @@ std::string ReplaceString(const std::string& subject,
 void CopyStreamWithReplacement(std::istream& input, std::ostream& output,
 	const std::string& searchString, const std::string& replacementString)
 {
+	// Построчно считываем из входного файла и записываем в выходной файл с заменой подстроки
 	std::string line;
-
 	while (std::getline(input, line))
 	{
 		output << ReplaceString(line, searchString, replacementString) << "\n";
 	}
-}*/
+}
 
-void CopyStreams(std::ifstream& input, std::ofstream& output)
+/* void CopyStreams(std::ifstream& input, std::ofstream& output)
 {
 	// Копируем входной файл в выходной
 	char ch;
@@ -67,7 +76,7 @@ void CopyStreams(std::ifstream& input, std::ofstream& output)
 			break;
 		}
 	}
-}
+}*/
 
 int main(int argc, char* argv[])
 {
@@ -96,7 +105,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	CopyStreams(input, output);
+	CopyStreamWithReplacement(input, output, args->searchString, args->replacementString);
 
 	if (input.bad())
 	{
