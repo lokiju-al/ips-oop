@@ -1,11 +1,31 @@
 - проверить на количество аргументов
+- проверить, что входное число от 0 до 255
+- преобразовать входное число из десятичного вида в двоичный (функция )
 - 
 
-Project Properties / General / C++ Language Standard:
-ISO C++17 Standard (/std:c++17)
-
 Project Properties / Debugging / Command Arguments:
-NotEmptyFile.txt "$(TEMP)\output.txt" 1231234 .
+0
+1
+36
+255
+256
+-1
+
+
+
+	for (int i = 7; i >= 0; --i)
+	{
+		std::cout << ((inputByte >> i) & 1);
+	}
+	std::cout << " ";
+	for (int i = 0; i <= 7; ++i)
+	{
+		std::cout << ((inputByte >> i) & 1);
+	}
+
+https://www.cyberforum.ru/cpp-beginners/thread2717442.html
+if ( !a ) return 0;
+return  ( (a & 1) << bit ) + reverse_bits( a >> 1, bit - 1 );
 
 Project Properties / Build Events / Post Build Event / Command Line:
 "$(ProjectDir)Tests.bat" "$(TargetPath)"
