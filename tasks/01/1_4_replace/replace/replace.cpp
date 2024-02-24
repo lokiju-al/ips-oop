@@ -33,23 +33,21 @@ std::string ReplaceString(const std::string& subject,
 	const std::string& searchString, const std::string& replacementString)
 {
 	size_t pos = 0;
-	size_t foundPos;
 	// Результат будет записан в новую строку result, оставляя строку subject неизменной
 	std::string result;
 	while (pos < subject.length())
 	{
 		// Находим позицию искомой строки, начиная с pos
-		if (foundPos = subject.find(searchString, pos))
+		size_t foundPos = subject.find(searchString, pos);
+		if (foundPos == std::string::npos)
 		{
-			// В результирующую строку записываем текст из диапазона [pos,foundPos)
 			result.append(subject, pos, foundPos - pos);
-			result.append(replacementString);
-			pos += searchString.length();
-		}
-		else
-		{
 			break;
 		}
+		// В результирующую строку записываем текст из диапазона [pos,foundPos)
+		result.append(subject, pos, foundPos - pos);
+		result.append(replacementString);
+		pos = foundPos + searchString.length();
 	}
 	return result;
 }
@@ -61,22 +59,12 @@ void CopyStreamWithReplacement(std::istream& input, std::ostream& output,
 	std::string line;
 	while (std::getline(input, line))
 	{
-		output << ReplaceString(line, searchString, replacementString) << "\n";
-	}
-}
-
-/* void CopyStreams(std::ifstream& input, std::ofstream& output)
-{
-	// Копируем входной файл в выходной
-	char ch;
-	while (input.get(ch))
-	{
-		if (!output.put(ch))
+		if (!(output << ReplaceString(line, searchString, replacementString) << "\n"))
 		{
 			break;
 		}
 	}
-}*/
+}
 
 int main(int argc, char* argv[])
 {

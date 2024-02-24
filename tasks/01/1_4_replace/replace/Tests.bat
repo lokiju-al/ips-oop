@@ -9,32 +9,56 @@ if %MyProgram%=="" (
 	exit /B 1
 )
 
-REM Копирование пустого файла
-%MyProgram% EmptyFile.txt "%TEMP%\output.txt" || goto err
-fc EmptyFile.txt "%TEMP%\output.txt" > nul || goto err
+REM ------------------------------- НЕГАТИВНЫЕ КЕЙСЫ -------------------------------
+
+REM Запуск без достаточного количества параметров
+%MyProgram% MissingFile.txt && goto err
 echo Test 1 passed
 
-REM Копирование непустого файла с несколькими строчками
-%MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" || goto err
-fc NotEmptyFile.txt "%TEMP%\output.txt" > nul || goto err
+REM Запуск без параметров
+%MyProgram% && goto err
 echo Test 2 passed
 
-REM Копирование несуществующего файла
-%MyProgram% MissingFile.txt "%TEMP%\output.txt" && goto err
+REM Запуск с лишним параметром
+%MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" 123 йцу qwe && goto err
 echo Test 3 passed
 
-REM Запуск без одного из параметров
-%MyProgram% MissingFile.txt && goto err
+REM Замена в несуществующем файле
+%MyProgram% MissingFile.txt "%TEMP%\output.txt" 123 qwe && goto err
 echo Test 4 passed
 
-REM Запуск без обоих параметров
-%MyProgram% && goto err
+REM ------------------------------- ПОЗИТИВНЫЕ КЕЙСЫ -------------------------------
+REM Замена в пустом файле
+%MyProgram% EmptyFile.txt "%TEMP%\output.txt" 123 qwe || goto err
+fc "%TEMP%\output.txt" EmptyFile.txt > nul || goto err
 echo Test 5 passed
 
-REM Запуск с лишним параметром
-%MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" 123 йцу && goto err
+REM Замена в непустом файле с одной длинной строкой
+%MyProgram% OneStringFile.txt "%TEMP%\output.txt" Microsoft MS || goto err
+fc "%TEMP%\output.txt" test-etalon\OneStringFile-Microsoft-MS.txt > nul || goto err
 echo Test 6 passed
 
+REM Замена в непустом файле с несколькими строками
+%MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" 1231234 W || goto err
+fc "%TEMP%\output.txt" test-etalon\NotEmptyFile-1231234-W.txt > nul || goto err
+echo Test 7 passed
+
+REM Замена в непустом файле с несколькими строками, если подстрока не найдена
+%MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" йййцццууукккеееннн . || goto err
+fc "%TEMP%\output.txt" NotEmptyFile.txt > nul || goto err
+echo Test 8 passed
+
+REM Замена в непустом файле с несколькими строками, если подстрока равна строке
+%MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" 12312312345 "" || goto err
+fc "%TEMP%\output.txt" test-etalon\NotEmptyFile-12312312345.txt > nul || goto err
+echo Test 9 passed
+
+REM Замена в непустом файле с несколькими строками, проверка зацикливания
+%MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" 12312312345 1231231234512312312345 || goto err
+fc "%TEMP%\output.txt" test-etalon\NotEmptyFile-ma-mama.txt > nul || goto err
+echo Test 10 passed
+
+REM -------------------------------------------------------------------------------
 REM Тесты прошли успешно
 echo All tests passed successfuly
 exit /B 0
