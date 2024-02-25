@@ -1,7 +1,6 @@
 - проверить на количество аргументов
 - проверить, что входное число от 0 до 255
-- преобразовать входное число из десятичного вида в двоичный (функция )
-- 
+- преобразовать входное число 
 
 Project Properties / Debugging / Command Arguments:
 0
@@ -26,6 +25,8 @@ Project Properties / Debugging / Command Arguments:
 https://www.cyberforum.ru/cpp-beginners/thread2717442.html
 if ( !a ) return 0;
 return  ( (a & 1) << bit ) + reverse_bits( a >> 1, bit - 1 );
+
+Tests.bat C:\oop-ips\tasks\01\2_5_flipbyte\x64\Debug\flipbyte.exe
 
 Project Properties / Build Events / Post Build Event / Command Line:
 "$(ProjectDir)Tests.bat" "$(TargetPath)"
