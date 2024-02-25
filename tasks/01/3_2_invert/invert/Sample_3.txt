@@ -1,0 +1,578 @@
+class MatrixException{
+    private:
+    int numError;
+    public:
+    MatrixException(int i);
+    const wchar_t * Error()const;
+};
+class SquareMatrix{
+    public:
+
+    double ** M;
+    int size;
+
+    SquareMatrix(int inSize);
+
+    double & operator()(int row, int col)const;
+    SquareMatrix operator * (const double & f);
+    SquareMatrix operator!();
+    SquareMatrix & operator = (const double & );
+
+    double Determinant()const;
+    SquareMatrix Allied();
+    SquareMatrix PreMinor(int row, int col)const;
+    void Print();
+};
+
+ # include "Matrix.h"
+ # include < iostream >
+
+using namespace std;
+
+MatrixException::MatrixException(int i) {
+    numError = i;
+}
+const wchar_t * MatrixException::Error()const{
+    static const wchar_t * arrayErrors[] = {
+        /*  0  */
+        L "Неизвестная ошибка.",
+        /*  1  */
+        L "Переполнение. Попытка доступа к несуществующему элементу.",
+        /*  2  */
+        L "Обратная матрица не рассчитана: определитель равен 0.",
+        /*  3  */
+        L "Невозможно рассчитать минор для матрицы данного размера.",
+        /*  4  */
+        L "Неверный адрес переменной.",
+        /*  5  */
+        L "Ошибка ввода размера матрицы.",
+        /*  6  */
+        L "Невозможно выделить память.",
+        /*  7  */
+        L "Пункта меню с таким номером нет.",
+        /*  8  */
+        L "Размер матрицы должен задаваться целым числом и быть больше нуля.",
+        /*  9  */
+        L "Невозможно присвоить значение элементу. Проверьте вводимое значение.",
+        /*  10 */
+        L "Невозможно открыть файл для записи.",
+        /*  11 */
+        L "Невозможно открыть файл для чтения.",
+        /*  12 */
+        L "Количество чисел в файле меньше необходимого.",
+        /*  13 */
+        L "Нет строки с таким номером.",
+        /*  14 */
+        L "Нет столбца с таким номером."
+    };
+
+    if (numError >= 0 && numError <= 15) {
+        return arrayErrors[numError];
+    } else {
+        return 0;
+    }
+}
+SquareMatrix::SquareMatrix(int inSize) {
+    try {
+        if (inSize <= 0) {
+            throw MatrixException(8);
+        }
+        size = inSize;
+        M = (double ** )new double[size];
+        for (int i = 0; i < size; i++) {
+            M[i] = (double * )new double[size];
+            for (int j = 0; j < size; j++) {
+                M[i][j] = 0;
+            }
+        }
+    } catch (bad_alloc) {
+        throw MatrixException(6);
+    }
+}
+double & SquareMatrix::operator()(int row, int col)const{
+    if (row >= size || col >= size) {
+        throw MatrixException(1);
+    }
+    return (double & )M[row][col];
+}
+SquareMatrix SquareMatrix::operator * (const double & f) {
+    if (f == 0) {
+        throw MatrixException(4);
+    }
+    for (int i = 0, j; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            ( * this)(i, j) *= f;
+        }
+    }
+    return  * this;
+}
+SquareMatrix SquareMatrix::operator!() {
+    SquareMatrix newMatrix(size);
+    int i,
+    j;
+
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            newMatrix(j, i) = ( * this)(i, j);
+        }
+    }
+    return newMatrix;
+}
+SquareMatrix & SquareMatrix::operator = (const double & f) {
+    if (f == 0) {
+        throw MatrixException(4);
+    }
+    for (int i = 0, j; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            if (i == j) {
+                ( * this)(i, j) = f;
+            } else {
+                ( * this)(i, j) = 0;
+            }
+        }
+    }
+    return  * this;
+}
+double SquareMatrix::Determinant()const {
+    double determ = 0;
+    if (size == 1) {
+        return ( * this)(0, 0);
+    }
+    for (int i = 0; i < size; i++) {
+        double a = ( * this)(0, i) * (i % 2 ? -1 : 1);
+        determ += a * this->PreMinor(0, i).Determinant();
+    }
+    return determ;
+}
+SquareMatrix SquareMatrix::Allied() {
+    if ((size - 1) <= 0) {
+        throw MatrixException(3);
+    }
+    SquareMatrix newMatrix(size);
+    int i,
+    j;
+
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            newMatrix(i, j) = this->PreMinor(i, j).Determinant() * ((i + j) % 2 ? -1 : 1);
+        }
+    }
+    return newMatrix;
+}
+SquareMatrix SquareMatrix::PreMinor(int row, int col)const{
+    SquareMatrix newMatrix(size - 1);
+    int i,
+    j,
+    in,
+    jn;
+
+    for (i = 0, in = 0; i < size; i++) {
+        if (i != row) {
+            for (j = 0, jn = 0; j < size; j++) {
+                if (j != col) {
+                    newMatrix(in, jn++) = ( * this)(i, j);
+                }
+            }
+            in++;
+        }
+    }
+    return newMatrix;
+}
+void SquareMatrix::Print() {
+    int i,
+    j;
+    //for (i=0; i<size; i++) {
+    //		cout << " ---------------";
+    //}
+    //cout << endl;
+    cout.precision(3);
+    cout.setf(ios::showpoint | ios::fixed | ios::left);
+    for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
+            //cout << "|" << " [" << i+1 << "," << j+1 << "]" << "\t" << (*this).M[i][j] << "\t";
+            cout << "[" << i + 1 << "," << j + 1 << "]" << " ";
+            cout.width(12);
+            cout << ( * this).M[i][j];
+        }
+        //cout << "|" << endl;
+        //for (j=0;j<size;j++) {
+        //	cout << " ---------------";
+        //}
+        cout << endl;
+    }
+}
+
+ # include < iostream >
+ # include < fstream >
+ # include < locale >
+ # include < conio.h >
+ # include "Matrix.h"
+
+using namespace std;
+
+int CorrectionInput(SquareMatrix * corrMatrix);
+int MenuSelect();
+int SaveToFile(double * determinant);
+int SaveToFile(SquareMatrix * main);
+int SaveToFile(double * determinant, SquareMatrix * allied, SquareMatrix * inverse);
+void About();
+void ClearConsole();
+void FromBinaryFile();
+void FromKeyboard();
+void MenuTypeOutput();
+int main() {
+    wcout.imbue(locale("rus_rus.866"));
+    locale loc("rus_rus.866");
+    char choice;
+    while (true) {
+        int pos = 0;
+        choice = MenuSelect();
+        switch (choice) {
+        case 1:
+            FromKeyboard();
+            MenuTypeOutput();
+            ClearConsole();
+            break;
+        case 2:
+            FromBinaryFile();
+            MenuTypeOutput();
+            ClearConsole();
+            break;
+        case 3:
+            ClearConsole();
+            break;
+        case 4:
+            exit(0);
+        }
+    }
+    getchar();
+    return 0;
+}
+void FromBinaryFile() {
+    try {
+        ifstream fin("input.dat", ios::in | ios::binary);
+        if (fin == 0) {
+            fin.close();
+            throw MatrixException(11);
+        }
+
+        int i,
+        j,
+        sizeOfMatrix;
+        double determinant;
+        double buf[400];
+
+        wcout << L "Введите размер квадратной матрицы: ";
+        cin >> sizeOfMatrix;
+        if (cin.fail() != 0) {
+            cin.clear();
+            char errInput[50];
+            cin >> errInput;
+            throw MatrixException(5);
+        }
+        SquareMatrix MainMatrix(sizeOfMatrix);
+        SquareMatrix AlliedMatrix(sizeOfMatrix);
+        SquareMatrix InverseMatrix(sizeOfMatrix);
+        wcout << endl << L "Чтение файла input.dat..." << endl;
+        fin.read(reinterpret_cast < char *  > (buf), sizeOfMatrix * sizeOfMatrix * sizeof(double));
+        if ((fin.gcount() / sizeof(double)) < sizeOfMatrix * sizeOfMatrix) {
+            throw MatrixException(12);
+        }
+        for (i = 0; i < MainMatrix.size; i++) {
+            for (j = 0; j < MainMatrix.size; j++) {
+                MainMatrix(i, j) = buf[i * sizeOfMatrix + j];
+            }
+        }
+        fin.close();
+        wcout << endl << L "Главная матрица" << endl;
+        MainMatrix.Print();
+        wcout << endl;
+        while (CorrectionInput( & MainMatrix) != -1) {
+            wcout << endl << L "Главная матрица" << endl;
+            MainMatrix.Print();
+            wcout << endl;
+        };
+        wcout << endl << L "Главная матрица" << endl;
+        MainMatrix.Print();
+        wcout << endl;
+        determinant = MainMatrix.Determinant();
+        wcout << L "Определитель = " << determinant << endl << endl;
+        if (SaveToFile( & determinant) != 0) {
+            throw MatrixException(10);
+        }
+        if (MainMatrix.Determinant() == 0) {
+            throw MatrixException(2);
+        }
+        AlliedMatrix = !(MainMatrix.Allied());
+        wcout << L "Союзная матрица" << endl;
+        AlliedMatrix.Print();
+        wcout << endl;
+        InverseMatrix = AlliedMatrix * (1 / determinant);
+        wcout << L "Обратная матрица" << endl;
+        InverseMatrix.Print();
+        wcout << endl;
+        if (SaveToFile( & determinant,  & AlliedMatrix,  & InverseMatrix) != 0) {
+            throw MatrixException(10);
+        }
+    } catch (MatrixException Exc) {
+        wcout << Exc.Error() << endl << endl;
+    }
+}
+void FromKeyboard() {
+    int i,
+    j,
+    sizeOfMatrix;
+    double element;
+    double determinant;
+    try {
+        wcout << L "Введите размер квадратной матрицы: ";
+        cin >> sizeOfMatrix;
+        if (cin.fail() != 0) {
+            cin.clear();
+            char errInput[50];
+            cin >> errInput;
+            throw MatrixException(5);
+        }
+        SquareMatrix MainMatrix(sizeOfMatrix);
+        SquareMatrix AlliedMatrix(sizeOfMatrix);
+        SquareMatrix InverseMatrix(sizeOfMatrix);
+        wcout << endl << L "Ввод элементов матрицы" << endl;
+        for (i = 0; i < MainMatrix.size; i++) {
+            for (j = 0; j < MainMatrix.size; j++) {
+                wcout << L "Введите элемент (" << i + 1 << "," << j + 1 << ") : ";
+                cin >> element;
+                if (cin.fail() != 0) {
+                    cin.clear();
+                    char errInput[50];
+                    cin >> errInput;
+                    throw MatrixException(9);
+                }
+                MainMatrix(i, j) = element;
+            }
+            wcout << endl;
+        }
+        wcout << endl << L "Главная матрица" << endl;
+        MainMatrix.Print();
+        wcout << endl;
+        while (CorrectionInput( & MainMatrix) != -1) {
+            wcout << endl << L "Главная матрица" << endl;
+            MainMatrix.Print();
+            wcout << endl;
+        };
+        wcout << endl << L "Главная матрица" << endl;
+        MainMatrix.Print();
+        wcout << endl;
+        if (SaveToFile( & MainMatrix) != 0) {
+            throw MatrixException(10);
+        }
+        determinant = MainMatrix.Determinant();
+        wcout << L "Определитель = " << determinant << endl << endl;
+        if (SaveToFile( & determinant) != 0) {
+            throw MatrixException(10);
+        }
+        if (MainMatrix.Determinant() == 0) {
+            throw MatrixException(2);
+        }
+        AlliedMatrix = !(MainMatrix.Allied());
+        wcout << L "Союзная матрица" << endl;
+        AlliedMatrix.Print();
+        wcout << endl;
+        InverseMatrix = AlliedMatrix * (1 / determinant);
+        wcout << L "Обратная матрица" << endl;
+        InverseMatrix.Print();
+        wcout << endl;
+        if (SaveToFile( & determinant,  & AlliedMatrix,  & InverseMatrix) != 0) {
+            throw MatrixException(10);
+        }
+    } catch (MatrixException Exc) {
+        wcout << Exc.Error() << endl << endl;
+    }
+}
+void MenuTypeOutput() {
+    wcout << L "Чтобы вывести меню нажмите любую клавишу..." << endl;
+    _getch();
+    cout << endl;
+}
+void ClearConsole() {
+    for (int i = 0; i < 25; i++)
+        cout << endl;
+}
+void About(void) {
+    int i;
+    for (i = 0; i < 33; i++) {
+        wcout << "#";
+    }
+    wcout << endl << "#\t\t\t\t#" << endl
+     << L "#\tОбратная матрица\t#" << endl
+     << "#\t\t\t\t#" << endl
+     << "#\t\t\t\t#" << endl
+     << L "# Автор: Демидов Константин\t#" << endl;
+    for (i = 0; i < 33; i++) {
+        wcout << "#";
+    }
+    wcout << endl << "#\t\t\t\t#" << endl
+     << "#\t\t\t\t#" << endl;
+}
+
+int CorrectionInput(SquareMatrix * corrMatrix) {
+    int element = 0;
+    int row = -1,
+    col = -1;
+
+    wcout << L "Корректировать введенные данные?" << endl
+     << L "[1] - для исправления введенных данных" << endl
+     << L "[Любая другая клавиша] - для продолжения вычислений" << endl
+     << L "Выбор: ";
+
+    cin >> element;
+    wcout << endl << endl;
+    if (cin.fail() != 0) {
+        cin.clear();
+        char errInput[50];
+        cin >> errInput;
+    }
+    if (element == 1) {
+        try {
+            wcout << L "Введите номер СТРОКИ исправляемого элемента: ";
+            cin >> row;
+            if ((cin.fail() != 0) || (row < 1 || row > corrMatrix->size)) {
+                cin.clear();
+                char errInput[50];
+                cin >> errInput;
+                throw MatrixException(13);
+            }
+            wcout << L "Введите номер СТОЛБЦА исправляемого элемента: ";
+            cin >> col;
+            if ((cin.fail() != 0) || (col < 1 || col > corrMatrix->size)) {
+                cin.clear();
+                char errInput[50];
+                cin >> errInput;
+                throw MatrixException(14);
+            }
+            wcout << L "[" << row << "," << col << "] " << corrMatrix->M[row - 1][col - 1] << " --> ";
+            cin >> element;
+            wcout << endl;
+            if (cin.fail() != 0) {
+                cin.clear();
+                char errInput[50];
+                cin >> errInput;
+                throw MatrixException(9);
+            }
+            corrMatrix->M[row - 1][col - 1] = element;
+        } catch (MatrixException Exc) {
+            wcout << Exc.Error() << endl << endl;
+        }
+    } else {
+        return -1;
+    }
+    return 0;
+}
+int MenuSelect() {
+    int c = -1;
+    About();
+    wcout << L "# 1. Ввести с клавиатуры\t#" << endl
+     << L "# 2. Ввести из файла\t\t#" << endl
+     << L "# 3. Очистить консоль\t\t#" << endl
+     << "#\t\t\t\t#" << endl
+     << L "# 4. Выход\t\t\t#" << endl
+     << "#\t\t\t\t#" << endl;
+    for (int i = 0; i < 33; i++) {
+        wcout << "#";
+    }
+    while (true) {
+        try {
+            wcout << endl << endl << endl
+             << L "Введите номер нужного пункта: ";
+            cin >> c;
+            if (cin.fail() != 0) {
+                cin.clear();
+                char errInput[50];
+                cin >> errInput;
+                throw MatrixException(7);
+            }
+            if (c < 0 || c > 4) {
+                throw MatrixException(7);
+            }
+            break;
+        } catch (MatrixException Exc) {
+            wcout << Exc.Error() << endl << endl;
+        }
+    }
+    return c;
+}
+int SaveToFile(double * determinant) {
+    ofstream fout("results.txt");
+    if (fout == 0) {
+        return 1;
+    }
+    fout.precision(3);
+    fout.setf(ios::showpoint | ios::fixed | ios::left);
+    fout << "Детерминант = " <<  * determinant << endl;
+    fout.close();
+    return 0;
+}
+int SaveToFile(SquareMatrix * main) {
+    ofstream fout("matrix.dat", ios::binary);
+    if (fout == 0) {
+        return 1;
+    }
+
+    int i,
+    j;
+    double buf[100];
+
+    for (i = 0; i < main->size; i++) {
+        for (j = 0; j < main->size; j++) {
+            buf[i * main->size + j] = main->M[i][j];
+        }
+    }
+    fout.write(reinterpret_cast < char *  > (buf), main->size * main->size * sizeof(double));
+
+    //fout.precision(3);
+    //fout.setf(ios::showpoint | ios::fixed | ios::left);
+    //fout << "Введенная матрица" << endl;
+    //for (i=0 ; i<(*main).size; i++) {
+    //	for (j=0; j<(*main).size; j++) {
+    //		fout << "[" << i+1 << "," << j+1 << "]" << " ";
+    //		fout.width(12);
+    //		fout << (*main).M[i][j];
+    //	}
+    //	fout << endl;
+    //}
+    fout.close();
+    return 0;
+}
+int SaveToFile(double * determinant, SquareMatrix * allied, SquareMatrix * inverse) {
+    ofstream fout("results.txt");
+    if (fout == 0) {
+        return 1;
+    }
+
+    int i,
+    j;
+
+    fout.precision(3);
+    fout.setf(ios::showpoint | ios::fixed | ios::left);
+    fout << "Результаты: " << endl << endl
+     << "Детерминант = " <<  * determinant << endl << endl
+     << "Союзная матрица" << endl;
+    for (i = 0; i < ( * allied).size; i++) {
+        for (j = 0; j < ( * allied).size; j++) {
+            fout << "[" << i + 1 << "," << j + 1 << "]" << " ";
+            fout.width(12);
+            fout << ( * allied).M[i][j];
+        }
+        fout << endl;
+    }
+    fout << endl << "Oбратная матрица" << endl;
+    for (i = 0; i < ( * inverse).size; i++) {
+        for (j = 0; j < ( * inverse).size; j++) {
+            fout << "[" << i + 1 << "," << j + 1 << "]" << " ";
+            fout.width(12);
+            fout << ( * inverse).M[i][j];
+        }
+        fout << endl;
+    }
+    fout.close();
+    return 0;
+}

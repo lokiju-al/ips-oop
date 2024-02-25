@@ -1,0 +1,44 @@
+- проверить на количество аргументов
+- проверить, что входное число от 0 до 255
+- преобразовать входное число 
+
+
+
+
+
+https://yukhym.com/ru/matritsy-i-opredeliteli/obratnaya-matritsa-primery-vychisleniya.html
+https://www.cyberforum.ru/cpp-beginners/thread14795.html
+
+int Det(int **matr, int n)      
+{
+        int temp = 0;   //временная переменная для хранения определителя
+        int k = 1;              //степень
+        if(n < 1)
+            return 0;
+        else if (n == 1)
+                temp = matr[0][0];
+        else if (n == 2)
+                temp = matr[0][0] * matr[1][1] - matr[1][0] * matr[0][1];
+        else{
+                for(int i = 0; i < n; i++){
+                        int m = n - 1; 
+                        int **temp_matr = new int * [m];
+                        for(int j = 0; j < m; j++)
+                                temp_matr[j] = new int [m];
+                        Get_matr(matr, n, temp_matr, 0, i);
+                        temp = temp + k * matr[0][i] * Det(temp_matr, m);
+                        k = -k;
+                        FreeMem(temp_matr, m);
+                }
+        }
+        return temp;
+}
+
+Project Properties / General / C++ Language Standard:
+ISO C++17 Standard (/std:c++17)
+
+Project Properties / Debugging / Command Arguments:
+NotEmptyFile.txt
+
+Project Properties / Build Events / Post Build Event / Command Line:
+"$(ProjectDir)Tests.bat" "$(TargetPath)"

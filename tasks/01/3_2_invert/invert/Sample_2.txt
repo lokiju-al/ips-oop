@@ -1,0 +1,94 @@
+#include "stdafx.h"
+int _tmain(int argc, _TCHAR* argv[])
+{
+	return 0;
+}
+
+#include<stdio.h>
+#include<stdlib.h>
+void getmem(int ***mass,int n)
+{
+*mass=(int**)malloc(n*sizeof(int));
+  for (int i=0;i<n;i++)
+    *(*mass+i) = (int*)malloc(n*sizeof(int));
+}
+void getmemfloat(float ***mass,int n)
+{
+*mass=(float**)malloc(n*sizeof(int));
+  for (int i=0;i<n;i++)
+    *(*mass+i) = (float*)malloc(n*sizeof(int));
+}
+int matr(int I, int J, int n, int **arr)
+{
+int** b;
+getmem(&b,n-1);
+int det=0;
+for (int i=0;i<n;i++)
+  for (int j=0;j<n;j++)
+   if ((i!=I)&&(j!=J))
+    if (i<I)
+      if (j<J)
+        b[i][j]=arr[i][j];
+        else b[i][j-1]=arr[i][j];
+        else if (j<J)
+               b[i-1][j]=arr[i][j];
+               else b[i-1][j-1]=arr[i][j];
+n--;
+if (n>2)
+  for (int j=0;j<n;j++)
+    {
+    if (j%2==0)
+      det=det+b[0][j]*matr(0,j,n,b);
+      else det=det-b[0][j]*matr(0,j,n,b);
+    }
+  else if (n>2) det=b[0][0]*b[1][1]-b[0][1]*b[1][0];
+    else det=b[0][0];
+return det;
+}
+int main()
+{
+int det=0,n;
+int** a;
+float** b;
+FILE *f1,*f2;
+f1=fopen("input4.txt","r");
+f2=fopen("output4.txt","w");
+printf("razmernost'matrici: ");
+fscanf(f1,"%d",&n);
+printf("%d\n",n);
+getmem(&a,n);
+getmemfloat(&b,n);
+for (int i=0;i<n;i++)
+  {
+  for (int j=0;j<n;j++)
+    if (fscanf(f1,"%d", &a[i][j])!=EOF) 
+    { 
+    printf("%d ",a[i][j]);
+    } ;
+  printf("\n");
+  }
+for (int j=0;j<n;j++)
+  {
+  if (j%2==0)
+    det=det+a[0][j]*matr(0,j,n,a);
+    else det=det-a[0][j]*matr(0,j,n,a);
+  }
+if (det!=0)
+  {
+  fprintf(f2,"determinant=%d\n",det);
+  fprintf(f2,"size=%d\n",n);
+  for (int i=0;i<n;i++)
+    for (int j=0;j<n;j++)
+      if ((i+j)%2==0)
+        b[j][i]=matr(i,j,n,a);
+        else b[j][i]=(-1)*matr(i,j,n,a);
+  for (int i=0;i<n;i++)
+    {
+    for (int j=0;j<n;j++)
+      fprintf(f2,"%2.3f\t",b[i][j]/det);
+    fprintf(f2,"\n");
+    }
+  }
+  else fprintf(f2,"determinant=%d\ndannaya matrica ne imeet obratnoy",det);
+fclose(f2);
+}
