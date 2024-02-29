@@ -1,7 +1,10 @@
-#include <fstream>
+п»ї#include <fstream>
 #include <iostream>
 #include <optional>
 #include <string>
+
+using Matrix2x2 = int[2][2];
+using Matrix3x3 = int[3][3];
 
 struct Args
 {
@@ -21,7 +24,8 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 	return args;
 }
 
-void ReadArray(std::istream& input, int arr[3][3])
+// РЎС‡РёС‚С‹РІР°РµРј С‡РёСЃР»Р° РёР· РІС…РѕРґРЅРѕРіРѕ С„Р°Р№Р»Р° РІ РјР°СЃСЃРёРІ
+void ReadArray(std::istream& input, Matrix3x3 arr)
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -36,18 +40,35 @@ void ReadArray(std::istream& input, int arr[3][3])
 	std::cout << arr[2][0] << " " << arr[2][1] << " " << arr[2][2] << "\n";
 }
 
+int DeterminantOfArray(Matrix3x3 arr, int n)
+{
+	int det = 0;
+	if (n == 2)
+		det = arr[0][0] * arr[1][1] - arr[1][0] * arr[0][1];
+	else if (n == 3)
+	{
+		det = arr[0][0] * arr[1][1] * arr[2][2] + arr[2][0] * arr[1][2] * arr[0][1] + arr[0][2] * arr[1][0] * arr[2][1] 
+			- (arr[0][2] * arr[1][1] * arr[2][0] + arr[0][1] * arr[1][0] * arr[2][2] + arr[0][0] * arr[1][2] * arr[2][1]);
+	}
+	else
+	{
+		return 0;
+	}
+	return det;
+}
+
 int main(int argc, char* argv[])
 {
 	auto args = ParseArgs(argc, argv);
-	// Проверка правильности аргументов командной строки
+	// РџСЂРѕРІРµСЂРєР° РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё Р°СЂРіСѓРјРµРЅС‚РѕРІ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё
 	if (!args)
 	{
 		return 1;
 	}
 
-	int inputArray[3][3];
+	Matrix3x3 inputArray;
 
-	// Открываем входной файл для чтения
+	// РћС‚РєСЂС‹РІР°РµРј РІС…РѕРґРЅРѕР№ С„Р°Р№Р» РґР»СЏ С‡С‚РµРЅРёСЏ
 	std::ifstream input;
 	input.open(args->inputFileName);
 	if (!input.is_open())
@@ -56,14 +77,24 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	// Считываем числа из входного файла в массив
 	ReadArray(input, inputArray);
+	std::cout << "DeterminantOfArray: " << DeterminantOfArray(inputArray, 3);
 
 	if (input.bad())
 	{
 		std::cout << "Failed to read data from input file";
 		return 1;
 	}
+
+
+
+
+
+
+
+
+
+
 
 	return 0;
 }
