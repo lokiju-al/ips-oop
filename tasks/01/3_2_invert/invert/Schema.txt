@@ -2,38 +2,13 @@
 - считать массив из файла с проверкой на ошибки (корректность данных, количество элементов)
 - найти определитель входной матрицы ипроверить на вырожденность 
   (если вырожденная, то вывести сообщение и выйти) "The matrix is singular and there is no inverse for it"
-- найти матрицу алгебраических дополнений (-1)^(i+j)*detM2
-- найти присоединенную (союзную) матрицу (протранспонировать матрицу алгебраических дополнений)
+- найти AdditionArray() матрицу алгебраических дополнений (-1)^(i+j)*minor
+- найти AttachedArray() присоединенную (союзную) матрицу (протранспонировать матрицу алгебраических дополнений)
 - найти обратную матрицу (разделить присоединенную матрицу на определитель)
 
 
 https://yukhym.com/ru/matritsy-i-opredeliteli/obratnaya-matritsa-primery-vychisleniya.html
 https://www.cyberforum.ru/cpp-beginners/thread14795.html
-
-int Det(int **matr, int n)      
-{
-        int temp = 0;   //временная переменная для хранения определителя
-        int k = 1;              //степень
-        if(n < 1)
-            return 0;
-        else if (n == 1)
-                temp = matr[0][0];
-        else if (n == 2)
-                temp = matr[0][0] * matr[1][1] - matr[1][0] * matr[0][1];
-        else{
-                for(int i = 0; i < n; i++){
-                        int m = n - 1; 
-                        int **temp_matr = new int * [m];
-                        for(int j = 0; j < m; j++)
-                                temp_matr[j] = new int [m];
-                        Get_matr(matr, n, temp_matr, 0, i);
-                        temp = temp + k * matr[0][i] * Det(temp_matr, m);
-                        k = -k;
-                        FreeMem(temp_matr, m);
-                }
-        }
-        return temp;
-}
 
 
 Тесты:
@@ -49,9 +24,13 @@ int Det(int **matr, int n)
 0 1 0		0 1 0
 0 0 1		0 0 1
 
-1 2 3		-0.964771 0.430661 -0.017183
-5 5 7		0.723533 -0.447973 0.137884
-11 13 7		0.172358 0.155200 -0.086211
+1 2 3		-0.966 0.431 -0.0172
+5 5 7		0.724 -0.448 0.138
+11 13 7		0.172 0.155 -0.0862
+
+2 0 1		2 2 1,5
+0 -3 -1		1 1 1
+-2 4 0		-3 -4 -3
 
 
 Project Properties / General / C++ Language Standard:

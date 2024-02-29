@@ -22,4 +22,9 @@
   <ItemGroup>
     <Text Include="MatrixFile.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Tests.bat">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
