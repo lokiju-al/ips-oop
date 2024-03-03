@@ -25,6 +25,18 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 	return args;
 }
 
+void OpenInputFile(std::ifstream& input, const std::string& inputFileName)
+{
+	// Открываем входной файл для чтения
+	input.open(inputFileName);
+	if (!input.is_open())
+	{
+		throw std::string{
+			"Failed to open '" + inputFileName + "' for reading\n"
+		};
+	}
+}
+
 // Считываем числа из входного файла в массив
 void ReadArray(std::istream& input, Matrix3x3 arr)
 {
@@ -40,14 +52,14 @@ void ReadArray(std::istream& input, Matrix3x3 arr)
 	}
 }
 
-float DeterminantOfArray(Matrix3x3 arr)
+float CalculateDeterminantOfArray(Matrix3x3 arr)
 {
 	return arr[0][0] * arr[1][1] * arr[2][2] + arr[2][0] * arr[1][2] * arr[0][1] 
 			+ arr[0][2] * arr[1][0] * arr[2][1] - arr[0][2] * arr[1][1] * arr[2][0] 
 			- arr[0][1] * arr[1][0] * arr[2][2] - arr[0][0] * arr[1][2] * arr[2][1];
 }
 
-void AdditionArray(Matrix3x3 inp, Matrix3x3 add)
+void MakeAdditionArray(Matrix3x3 inp, Matrix3x3 add)
 {
 	add[0][0] = (inp[1][1] * inp[2][2] - inp[2][1] * inp[1][2]);
 	add[0][1] = (inp[1][0] * inp[2][2] - inp[2][0] * inp[1][2]) * (-1);
@@ -60,7 +72,7 @@ void AdditionArray(Matrix3x3 inp, Matrix3x3 add)
 	add[2][2] = (inp[0][0] * inp[1][1] - inp[1][0] * inp[0][1]);
 }
 
-void AttachedArray(Matrix3x3 inp, Matrix3x3 add)
+void MakeAttachedArray(Matrix3x3 inp, Matrix3x3 add)
 {
 	inp[0][0] = add[0][0];
 	inp[0][1] = add[1][0];
@@ -71,6 +83,23 @@ void AttachedArray(Matrix3x3 inp, Matrix3x3 add)
 	inp[2][0] = add[0][2];
 	inp[2][1] = add[1][2];
 	inp[2][2] = add[2][2];
+}
+
+void PrintInvertArray(Matrix3x3& inputArray, float determinantOfInputArray)
+{
+	std::cout << "Inverse matrix:\n";
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (inputArray[i][j] == 0)
+			{
+				inputArray[i][j] = 0;
+			}
+			std::cout << std::setprecision(3) << (inputArray[i][j] / determinantOfInputArray) << " ";
+		}
+		std::cout << "\n";
+	}
 }
 
 int main(int argc, char* argv[])
@@ -87,21 +116,25 @@ int main(int argc, char* argv[])
 
 	// Открываем входной файл для чтения
 	std::ifstream input;
-	input.open(args->inputFileName);
-	if (!input.is_open())
+	try
 	{
-		std::cout << "Failed to open '" << args->inputFileName << "' for reading\n";
+		OpenInputFile(input, args->inputFileName);
+	}
+	catch (std::string error_message)
+	{
+		std::cout << error_message;
 		return 1;
 	}
 
 	ReadArray(input, inputArray);
+
 	if (input.bad())
 	{
 		std::cout << "Failed to read data from input file\n";
 		return 1;
 	}
 
-	float determinantOfInputArray = DeterminantOfArray(inputArray);
+	float determinantOfInputArray = CalculateDeterminantOfArray(inputArray);
 	std::cout << "Determinant of input matrix: " << determinantOfInputArray << "\n";
 	if (determinantOfInputArray == 0)
 	{
@@ -109,23 +142,11 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	AdditionArray(inputArray, additionArray);
+	MakeAdditionArray(inputArray, additionArray);
 
-	AttachedArray(inputArray, additionArray);
+	MakeAttachedArray(inputArray, additionArray);
 
-	std::cout << "Inverse matrix:\n";
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			if (inputArray[i][j] == 0)
-			{
-				inputArray[i][j] = 0;
-			}
-			std::cout << std::setprecision(3) << (inputArray[i][j] / determinantOfInputArray) << " ";
-		}
-		std::cout << "\n";
-	}
+	PrintInvertArray(inputArray, determinantOfInputArray);
 
 	return 0;
 }
