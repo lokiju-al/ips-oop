@@ -27,6 +27,30 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 	return args;
 }
 
+void OpenInputFile(std::ifstream& input, const std::string& inputFileName)
+{
+	// Открываем входной файл для чтения
+	input.open(inputFileName);
+	if (!input.is_open())
+	{
+		throw std::string
+		{
+			"Failed to open '" + inputFileName + "' for reading\n"
+		};
+	}
+}
+
+void OpenOutputFile(std::ofstream& output, const std::string& outputFileName)
+{
+	// Открываем выходной файл для записи
+	output.open(outputFileName);
+	if (!output.is_open())
+	{
+		throw std::string{ "Failed to open '" + outputFileName + "' for writing\n" };
+	}
+}
+
+
 // Возвращает результат замены всех вхождений строки searchString внутри строки subject на replacementString
 // Если строка searchString пустая, то возвращается subject
 std::string ReplaceString(const std::string& subject,
@@ -43,18 +67,17 @@ std::string ReplaceString(const std::string& subject,
 	std::string result;
 	while (pos < subject.length())
 	{
-		// Находим позицию искомой строки, начиная с pos
+		// Находим позицию строки searchString, начиная с pos
 		size_t foundPos = subject.find(searchString, pos);
-		// Если searchString не найдена, в остатке subject, дописываем этот остато к результату и выходим
+		// Если searchString не найдена, в остатке subject, дописываем этот остаток к результату и выходим
 		if (foundPos == std::string::npos)
 		{
 			//--------------------------------------------1 find 2 appends
 			result.append(subject, pos, foundPos - pos);
 			break;
 		}
-		// В результирующую строку записываем текст из диапазона [pos,foundPos)
-		result.append(subject, pos, foundPos - pos);
-		result.append(replacementString);
+		// В результирующую строку записываем текст из диапазона [pos,foundPos) и строку replacementString
+		result.append(subject, pos, foundPos - pos).append(replacementString);
 		pos = foundPos + searchString.length();
 	}
 	return result;
@@ -84,22 +107,16 @@ int main(int argc, char* argv[])
 	}
 
 	//------------------------------------------------выделить в отдельные функции
-	// Открываем входной файл для чтения
 	std::ifstream input;
-	//OpenInputFile();
-	input.open(args->inputFileName);
-	if (!input.is_open())
-	{
-		std::cout << "Failed to open '" << args->inputFileName << "' for reading\n";
-		return 1;
-	}
-
-	// Открываем выходной файл для записи
 	std::ofstream output;
-	output.open(args->outputFileName);
-	if (!output.is_open())
+	try
 	{
-		std::cout << "Failed to open '" << args->outputFileName << "' for writing\n";
+		OpenInputFile(input, args->inputFileName);
+		OpenOutputFile(output, args->outputFileName);
+	}
+	catch (std::string error_message)
+	{
+		std::cout << error_message;
 		return 1;
 	}
 
