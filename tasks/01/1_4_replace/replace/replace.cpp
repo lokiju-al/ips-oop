@@ -46,7 +46,10 @@ void OpenOutputFile(std::ofstream& output, const std::string& outputFileName)
 	output.open(outputFileName);
 	if (!output.is_open())
 	{
-		throw std::string{ "Failed to open '" + outputFileName + "' for writing\n" };
+		throw std::string
+		{
+			"Failed to open '" + outputFileName + "' for writing\n"
+		};
 	}
 }
 
