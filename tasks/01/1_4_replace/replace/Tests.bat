@@ -48,7 +48,7 @@ REM «амена в непустом файле с несколькими строками, если подстрока не найдена
 fc "%TEMP%\output.txt" NotEmptyFile.txt > nul || goto err
 echo Test 8 passed
 echo -------------------------------------------------------------------------------
-REM «амена в непустом файле с несколькими строками, если подстрока равна строке
+REM «амена в непустом файле с несколькими строками, если пуста€ строка замены
 %MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" 12312312345 "" || goto err
 fc "%TEMP%\output.txt" test-etalon\NotEmptyFile-12312312345.txt > nul || goto err
 echo Test 9 passed
@@ -57,6 +57,11 @@ REM «амена в непустом файле с несколькими строками, проверка зацикливани€
 %MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" 12312312345 1231231234512312312345 || goto err
 fc "%TEMP%\output.txt" test-etalon\NotEmptyFile-ma-mama.txt > nul || goto err
 echo Test 10 passed
+echo -------------------------------------------------------------------------------
+REM «амена в непустом файле с несколькими строками, если пуста€ строка поиска
+%MyProgram% NotEmptyFile.txt "%TEMP%\output.txt" "" 1231231234512312312345 || goto err
+fc "%TEMP%\output.txt" test-etalon\NotEmptyFile.txt > nul || goto err
+echo Test 11 passed
 echo -------------------------------------------------------------------------------
 REM --------------------------------------------------------------------------------
 REM “есты прошли успешно

@@ -32,6 +32,12 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 std::string ReplaceString(const std::string& subject,
 	const std::string& searchString, const std::string& replacementString)
 {
+	//------------------------------------------------функция работает некорректно с входной пустой строкой
+	//------------------------------------------------добавить в тесты пустую строку
+	if (searchString == "")
+	{
+		return subject;
+	}
 	size_t pos = 0;
 	// Результат будет записан в новую строку result, оставляя строку subject неизменной
 	std::string result;
@@ -39,8 +45,10 @@ std::string ReplaceString(const std::string& subject,
 	{
 		// Находим позицию искомой строки, начиная с pos
 		size_t foundPos = subject.find(searchString, pos);
+		// Если searchString не найдена, в остатке subject, дописываем этот остато к результату и выходим
 		if (foundPos == std::string::npos)
 		{
+			//--------------------------------------------1 find 2 appends
 			result.append(subject, pos, foundPos - pos);
 			break;
 		}
@@ -75,8 +83,10 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	//------------------------------------------------выделить в отдельные функции
 	// Открываем входной файл для чтения
 	std::ifstream input;
+	//OpenInputFile();
 	input.open(args->inputFileName);
 	if (!input.is_open())
 	{
