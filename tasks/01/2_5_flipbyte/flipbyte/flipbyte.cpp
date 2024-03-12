@@ -20,6 +20,7 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 	return args;
 }
 
+//----------------------------------------------------------- вернуть unsigned char, и выдать исключение, если ошибка
 int ConvertInputStringToNumber(const std::string& inputString)
 {
 	int inputByte;
@@ -29,13 +30,14 @@ int ConvertInputStringToNumber(const std::string& inputString)
 	}
 	catch (std::exception& e)
 	{
+		//---------------------------------------------- бросать исключения, унаследованные runtime error от exception
 		std::cout << "Exception catched : " << e.what() << "\n";
 		throw std::string
 		{
 			"Please input a number in range [0 - 255]\n"
 		};
 	}
-	if (!(inputByte >= 0 && inputByte < 256))
+	if (!(inputByte >= 0 && inputByte < 256)) //---------------------------------------------- использовать <= UCHAR_MAX
 	{
 		throw std::string{
 			"Invalid input number\nInput number must be in range [0 - 255]\n"
@@ -44,7 +46,7 @@ int ConvertInputStringToNumber(const std::string& inputString)
 	return inputByte;
 }
 
-
+//----------------------------------------------------------------------------------------- использовать UpperCamelCase
 unsigned char flipByte(unsigned char inputNumber)			//i		inputNumber		resultNumber
 {															//		10011011		00000000
 	unsigned char resultNumber = 0;							//7		01001101		10000000
@@ -64,12 +66,13 @@ int main(int argc, char* argv[])
 	{
 		return 1;
 	}
+	//--------------------------------------------------------------------------------- спрятать внуть try вместе с кодом 
 	int inputByte;
 	try
 	{
 		inputByte = ConvertInputStringToNumber(args->inputString);
 	}
-	catch (std::string error_message)
+	catch (std::string error_message)// поймать по ссылке или конст ссылке чтобы избежать срезки (что это - уметь рассказать)
 	{
 		std::cout << error_message;
 		return 1;

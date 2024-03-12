@@ -4,6 +4,7 @@
 #include <string>
 #include <iomanip>
 
+// использовать std array
 using Matrix2x2 = float[2][2];
 using Matrix3x3 = float[3][3];
 
@@ -25,12 +26,14 @@ std::optional<Args> ParseArgs(int argc, char* argv[])
 	return args;
 }
 
+// такие функции выносить не надо
 void OpenInputFile(std::ifstream& input, const std::string& inputFileName)
 {
 	// Открываем входной файл для чтения
 	input.open(inputFileName);
 	if (!input.is_open())
 	{
+		// не выбрасывать числа, а наследники
 		throw std::string{
 			"Failed to open '" + inputFileName + "' for reading\n"
 		};
@@ -38,8 +41,10 @@ void OpenInputFile(std::ifstream& input, const std::string& inputFileName)
 }
 
 // Считываем числа из входного файла в массив
+// функция должна принимать по ссылке, но std array
 void ReadArray(std::istream& input, Matrix3x3 arr)
 {
+	// убрать вывод
 	std::cout << "Input matrix:\n";
 	for (int i = 0; i < 3; i++)
 	{
@@ -52,6 +57,7 @@ void ReadArray(std::istream& input, Matrix3x3 arr)
 	}
 }
 
+// переименовать массив в матрицу
 float CalculateDeterminantOfArray(Matrix3x3 arr)
 {
 	return arr[0][0] * arr[1][1] * arr[2][2] + arr[2][0] * arr[1][2] * arr[0][1] 
@@ -59,6 +65,8 @@ float CalculateDeterminantOfArray(Matrix3x3 arr)
 			- arr[0][1] * arr[1][0] * arr[2][2] - arr[0][0] * arr[1][2] * arr[2][1];
 }
 
+// подобрать подход имя для функции 
+// вернуьт массив 
 void MakeAdditionArray(Matrix3x3 inp, Matrix3x3 add)
 {
 	add[0][0] = (inp[1][1] * inp[2][2] - inp[2][1] * inp[1][2]);
@@ -72,6 +80,7 @@ void MakeAdditionArray(Matrix3x3 inp, Matrix3x3 add)
 	add[2][2] = (inp[0][0] * inp[1][1] - inp[1][0] * inp[0][1]);
 }
 
+// переименовать функцию присваимвет лавры предыд фун
 void MakeAttachedArray(Matrix3x3 inp, Matrix3x3 add)
 {
 	inp[0][0] = add[0][0];
@@ -85,6 +94,7 @@ void MakeAttachedArray(Matrix3x3 inp, Matrix3x3 add)
 	inp[2][2] = add[2][2];
 }
 
+// не делать два действия
 void PrintInvertArray(Matrix3x3& inputArray, float determinantOfInputArray)
 {
 	std::cout << "Inverse matrix:\n";
@@ -120,7 +130,7 @@ int main(int argc, char* argv[])
 	{
 		OpenInputFile(input, args->inputFileName);
 	}
-	catch (std::string error_message)
+	catch (std::string error_message)// поймать по ссылке или конст ссылке чтобы избежать срезки (что это - уметь рассказать)
 	{
 		std::cout << error_message;
 		return 1;
