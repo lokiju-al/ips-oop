@@ -1,7 +1,7 @@
 fun main() {
 
-    print("Введите имя: ")
-    val name = readLine()
+    print("Input floating point numbers separated by spaces: ")
+    val name = readlnOrNull()
 
-    println("Ваше имя: $name")
+    println("Modified input string: $name")
 }
