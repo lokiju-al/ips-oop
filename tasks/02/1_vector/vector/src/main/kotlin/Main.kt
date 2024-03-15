@@ -1,25 +1,45 @@
-fun readIntArrayFromInput(): IntArray {
-    // Считываем строку из стандартного потока ввода
-    val inputLine = readLine()
+fun readDoubleArrayFromInput(): DoubleArray {
+	print("Input floating point numbers separated by spaces: ")
+	val inputLine = readlnOrNull()
+	val numbers: List<String>? = inputLine?.split(" ")
+	val numberList = mutableListOf<Double>()
+	numbers?.forEachIndexed { index, value ->
+		try {
+			val number = value.toDouble()
+			numberList.add(number)
+		} catch (e: NumberFormatException) {
+			println("Element #${index + 1} \"$value\" isn't a number")
+		}
+	}
+	return numberList.toDoubleArray()
+}
 
-    // Разбиваем строку на отдельные числа, используя пробел в качестве разделителя
-    val numbers = inputLine?.split(" ")
+fun modifyAndPrintArray(array: DoubleArray) {
+	val minElement = array.minOrNull()
+	print("Modified input string (variant 2): ")
+	if (minElement != null) {
+		for (i in array.indices) {
+			array[i] *= minElement
+			print("${array[i]} ")
+		}
+		println()
+	}
+}
 
-    // Создаем массив чисел
-    val intArray = IntArray(numbers?.size ?: 0)
+fun sortAndPrintArray(array: DoubleArray) {
+	val sortedArray = array.sorted()
+	print("String with sorted array (bonus): ")
+	for (i in array.indices) {
+		print("${sortedArray[i]} ")
+	}
+}
 
-    // Преобразуем строки в числа и заполняем массив
-    for (i in numbers!!.indices) {
-        intArray[i] = numbers[i].toInt()
-    }
-
-    return intArray
+fun printModifiedInputString() {
+	val array = readDoubleArrayFromInput()
+	modifyAndPrintArray(array)
+	sortAndPrintArray(array)
 }
 
 fun main() {
-    print("Input floating point numbers separated by spaces: ")
-    val array = readIntArrayFromInput()
-
-    println("Modified input string: ")
-    array.forEach { println(it) }
+	printModifiedInputString()
 }
