@@ -1,15 +1,25 @@
-fun readIntArrayFromString(input: String): IntArray {
-    val numbers = input.split(" ").map { it.toInt() }
-    return numbers.toIntArray()
+fun readIntArrayFromInput(): IntArray {
+    // Считываем строку из стандартного потока ввода
+    val inputLine = readLine()
+
+    // Разбиваем строку на отдельные числа, используя пробел в качестве разделителя
+    val numbers = inputLine?.split(" ")
+
+    // Создаем массив чисел
+    val intArray = IntArray(numbers?.size ?: 0)
+
+    // Преобразуем строки в числа и заполняем массив
+    for (i in numbers!!.indices) {
+        intArray[i] = numbers[i].toInt()
+    }
+
+    return intArray
 }
 
-
 fun main() {
-    val input = "10 20 30 40 50"
-    val array = readIntArrayFromString(input)
-    println("Считанный массив чисел: ${array.joinToString()}")
     print("Input floating point numbers separated by spaces: ")
-    val name = readlnOrNull()
+    val array = readIntArrayFromInput()
 
-    println("Modified input string: $name")
+    println("Modified input string: ")
+    array.forEach { println(it) }
 }
