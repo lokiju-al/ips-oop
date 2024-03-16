@@ -14,10 +14,12 @@ fun readDoubleArrayFromInput(): DoubleArray {
 	return numberList.toDoubleArray()
 }
 
+//отдельно модификация и отдельно и печать
 fun modifyAndPrintArray(array: DoubleArray) {
 	val minElement = array.minOrNull()
 	print("Modified input string (variant 2): ")
 	if (minElement != null) {
+		//алгоритм минуя индексы
 		for (i in array.indices) {
 			array[i] *= minElement
 			print("${array[i]} ")
@@ -34,6 +36,7 @@ fun sortAndPrintArray(array: DoubleArray) {
 	}
 }
 
+//другое имя
 fun printModifiedInputString() {
 	val array = readDoubleArrayFromInput()
 	modifyAndPrintArray(array)
