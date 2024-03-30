@@ -1,0 +1,68 @@
+class Car {
+    private var engineOn = false
+    private var gear = 0
+    private var speed = 0
+
+    fun turnEngineOn() {
+        engineOn = true
+    }
+
+    fun turnEngineOff() {
+        engineOn = false
+        gear = 0
+        speed = 0
+    }
+
+    fun setGear(newGear: Int) {
+        if (engineOn) {
+            when {
+                newGear == -1 -> {
+                    if (speed == 0) {
+                        gear = newGear
+                    }
+                }
+                newGear == 0 -> {
+                    gear = newGear
+                }
+                newGear in 1..5 -> {
+                    val newSpeedRange = getSpeedRangeForGear(newGear)
+                    if (speed in newSpeedRange) {
+                        gear = newGear
+                    }
+                }
+            }
+        }
+    }
+
+    fun increaseSpeed(amount: Int) {
+        if (engineOn) {
+            if (gear == 0) {
+                speed = (speed - amount).coerceAtLeast(0)
+            } else {
+                val speedRange = getSpeedRangeForGear(gear)
+                speed = (speed + amount).coerceIn(speedRange)
+            }
+        }
+    }
+
+    fun decreaseSpeed(amount: Int) {
+        if (engineOn) {
+            if (gear == 0) {
+                speed = (speed + amount).coerceAtMost(0)
+            }
+        }
+    }
+
+    private fun getSpeedRangeForGear(gear: Int): IntRange {
+        return when (gear) {
+            -1 -> 0..20
+            0 -> 0..Int.MAX_VALUE
+            1 -> 0..30
+            2 -> 20..50
+            3 -> 30..60
+            4 -> 40..90
+            5 -> 50..150
+            else -> 0..0
+        }
+    }
+}
