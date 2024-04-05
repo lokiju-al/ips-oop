@@ -4,10 +4,12 @@ enum class Direction {
     STANDING_STILL
 }
 
+@Suppress("DEPRECATED_IDENTITY_EQUALS")
 class Car {
-    private var engineOn: Boolean = false
+    private var isEngineOn: Boolean = false
     private var currentGear: Int = 0
     private var currentSpeed: Int = 0
+    private var isMovingBackward: Boolean = false
 
     private fun GetSpeedRangeForGear(gear: Int): IntRange {
         return when (gear) {
@@ -23,13 +25,13 @@ class Car {
     }
 
     fun IsTurnedOn(): Boolean {
-        return engineOn
+        return isEngineOn
     }
 
     fun GetDirection(): Direction {
         return when {
-            currentGear == -1 -> Direction.BACKWARD
-            currentSpeed == 0 && currentGear == 0 -> Direction.STANDING_STILL
+            currentSpeed > 0 && isMovingBackward -> Direction.BACKWARD
+            currentSpeed == 0 -> Direction.STANDING_STILL
             else -> Direction.FORWARD
         }
     }
@@ -43,13 +45,13 @@ class Car {
     }
 
     fun TurnOnEngine(): Boolean {
-        engineOn = true
+        isEngineOn = true
         return true
     }
 
     fun TurnOffEngine(): Boolean {
         if (currentSpeed == 0 && currentGear == 0) {
-            engineOn = false
+            isEngineOn = false
             return true
         }
         return false
@@ -59,10 +61,10 @@ class Car {
         val newGear = when {
             gear == -1 && currentSpeed == 0 -> -1
             gear == 0 -> 0
-            gear in 1..5 && this.GetDirection() !== Direction.BACKWARD -> gear
+            gear in 1..5 && !isMovingBackward -> gear
             else -> null
         }
-        if (newGear != null && (newGear == 0 || (engineOn && currentSpeed in this.GetSpeedRangeForGear(gear)))) {
+        if (newGear != null && (newGear == 0 || (isEngineOn && currentSpeed in this.GetSpeedRangeForGear(gear)))) {
             currentGear = newGear
             return true
         }
@@ -70,13 +72,19 @@ class Car {
     }
 
     fun SetSpeed(speed: Int): Boolean {
-        if (engineOn && currentGear == 0 && speed <= currentSpeed && speed in this.GetSpeedRangeForGear(0)) {
+        if (isEngineOn && currentGear == 0 && speed <= currentSpeed && speed in this.GetSpeedRangeForGear(0)) {
+            if (speed == 0) {
+                isMovingBackward = false
+            }
             currentSpeed = speed
             return true
-        } else if (engineOn && speed in this.GetSpeedRangeForGear(currentGear)) {
+        } else if (isEngineOn && currentGear !== 0 && speed in this.GetSpeedRangeForGear(currentGear)) {
+            isMovingBackward = speed > 0 && currentGear == -1
             currentSpeed = speed
             return true
-        } else return false
+        } else {
+            return false
+        }
     }
 }
 
@@ -96,24 +104,22 @@ fun main() {
 
             "EngineOn" -> {
                 if (car.TurnOnEngine()) {
-                    println("Engine is turned on.")
-                } else {
-                    println("Engine is already turned on.")
+                    println("Engine is turned on")
                 }
             }
 
             "EngineOff" -> {
-                if (car.TurnOffEngine()) println("Engine is turned off.")
-                else println("Engine can't be turned off at the moment.")
+                if (car.TurnOffEngine()) println("Engine is turned off")
+                else println("Engine can't be turned off at the moment")
             }
 
             "SetGear" -> {
                 val gear = parts[1].toIntOrNull()
                 if (gear != null) {
-                    if (car.SetGear(gear)) println("Gear set to $gear.")
-                    else println("Can't set gear to $gear.")
+                    if (car.SetGear(gear)) println("Gear set to $gear")
+                    else println("Can't set gear to $gear")
                 } else {
-                    println("Invalid input for gear.")
+                    println("Invalid input for gear")
                 }
             }
 
@@ -121,12 +127,12 @@ fun main() {
                 val speed = parts[1].toIntOrNull()
                 if (speed != null) {
                     if (car.SetSpeed(speed)) {
-                        println("Speed set to $speed.")
+                        println("Speed set to $speed")
                     } else {
-                        println("Can't set speed to $speed.")
+                        println("Can't set speed to $speed")
                     }
                 } else {
-                    println("Invalid input for speed.")
+                    println("Invalid input for speed")
                 }
             }
 

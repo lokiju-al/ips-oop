@@ -23,29 +23,76 @@ class CarTest {
         assertEquals(Direction.STANDING_STILL, car.GetDirection())
         car.TurnOnEngine()
         car.SetGear(-1)
-        assertEquals(Direction.BACKWARD, car.GetDirection())
+        assertEquals(Direction.STANDING_STILL, car.GetDirection())
         car.SetSpeed(10)
         assertEquals(Direction.BACKWARD, car.GetDirection())
         car.SetGear(0)
-        assertEquals(Direction.STANDING_STILL, car.GetDirection())
+        assertEquals(Direction.BACKWARD, car.GetDirection())
+        car.SetSpeed(0)
         car.SetGear(1)
-        assertEquals(Direction.FORWARD, car.GetDirection())
+        assertEquals(Direction.STANDING_STILL, car.GetDirection())
         car.SetSpeed(10)
         assertEquals(Direction.FORWARD, car.GetDirection())
+        car.SetGear(0)
+        assertEquals(Direction.FORWARD, car.GetDirection())
+        car.SetSpeed(0)
+        assertEquals(Direction.STANDING_STILL, car.GetDirection())
+        car.SetGear(-1)
+        assertEquals(Direction.STANDING_STILL, car.GetDirection())
+        car.SetSpeed(10)
+        assertEquals(Direction.BACKWARD, car.GetDirection())
     }
 
     @Test
     fun testGetSpeed() {
+        car.TurnOnEngine()
         assertEquals(0, car.GetSpeed())
-        car.SetSpeed(50)
-        assertEquals(50, car.GetSpeed())
+        car.SetGear(1)
+        car.SetSpeed(30)
+        assertEquals(30, car.GetSpeed())
+        car.SetGear(3)
+        assertEquals(30, car.GetSpeed())
+        car.SetSpeed(60)
+        assertEquals(60, car.GetSpeed())
+        car.SetSpeed(60)
+        assertEquals(60, car.GetSpeed())
+        car.SetSpeed(30)
+        assertEquals(30, car.GetSpeed())
+        car.SetGear(0)
+        car.SetSpeed(1)
+        assertEquals(1, car.GetSpeed())
+        car.SetSpeed(0)
+        assertEquals(0, car.GetSpeed())
+        car.SetGear(-1)
+        assertEquals(0, car.GetSpeed())
+        car.SetSpeed(20)
+        assertEquals(20, car.GetSpeed())
     }
 
     @Test
     fun testGetGear() {
+        car.TurnOnEngine()
         assertEquals(0, car.GetGear())
         car.SetGear(2)
-        assertEquals(2, car.GetGear())
+        assertEquals(0, car.GetGear())
+        car.SetGear(1)
+        assertEquals(1, car.GetGear())
+        car.SetGear(-1)
+        assertEquals(-1, car.GetGear())
+        car.SetSpeed(5)
+        car.SetGear(1)
+        assertEquals(-1, car.GetGear())
+        car.SetGear(0)
+        assertEquals(0, car.GetGear())
+        car.SetSpeed(0)
+        car.SetGear(1)
+        assertEquals(1, car.GetGear())
+        car.SetSpeed(30)
+        car.SetGear(3)
+        assertEquals(3, car.GetGear())
+        car.SetSpeed(60)
+        car.SetGear(5)
+        assertEquals(5, car.GetGear())
     }
 
     @Test
@@ -53,44 +100,75 @@ class CarTest {
         assertFalse(car.IsTurnedOn())
         assertTrue(car.TurnOnEngine())
         assertTrue(car.IsTurnedOn())
+        assertTrue(car.TurnOnEngine())
+        assertTrue(car.IsTurnedOn())
+        assertTrue(car.TurnOffEngine())
+        assertTrue(car.TurnOnEngine())
     }
 
     @Test
     fun testTurnOffEngine() {
-        assertFalse(car.TurnOffEngine()) // Engine is already off
-        car.TurnOnEngine()
-        assertFalse(car.TurnOffEngine()) // Can't turn off engine while moving
-        car.SetGear(1)
-        car.SetSpeed(20)
-        assertFalse(car.TurnOffEngine()) // Can't turn off engine while moving
-        car.SetSpeed(0)
-        assertTrue(car.TurnOffEngine()) // Engine turned off
+        assertTrue(car.TurnOffEngine())
+        assertTrue(car.TurnOnEngine())
+        assertTrue(car.TurnOffEngine())
+        assertTrue(car.TurnOnEngine())
+        assertTrue(car.SetGear(1))
+        assertFalse(car.TurnOffEngine())
+        assertTrue(car.SetSpeed(20))
+        assertFalse(car.TurnOffEngine())
+        assertTrue(car.SetGear(2))
+        assertFalse(car.TurnOffEngine())
+        assertTrue(car.SetGear(0))
+        assertTrue(car.SetSpeed(0))
+        assertTrue(car.TurnOffEngine())
         assertFalse(car.IsTurnedOn())
     }
 
     @Test
     fun testSetGear() {
-        assertTrue(car.SetGear(2)) // Can set any gear when engine is off
-        assertFalse(car.SetGear(1)) // Can't set gear without turning on engine
-        car.TurnOnEngine()
-        assertTrue(car.SetGear(1)) // Can set gear after turning on engine
-        assertFalse(car.SetGear(10)) // Invalid gear
-        assertTrue(car.SetGear(-1)) // Can set reverse gear
-        assertTrue(car.SetGear(0)) // Can set neutral gear
-        car.SetSpeed(20)
-        assertFalse(car.SetGear(4)) // Can't set gear while moving
-        assertTrue(car.SetGear(0)) // Can set gear when speed is 0
+        assertTrue(car.SetGear(0))
+        assertFalse(car.SetGear(1))
+        assertTrue(car.TurnOnEngine())
+        assertFalse(car.SetGear(10))
+        assertTrue(car.SetGear(-1))
+        assertTrue(car.SetGear(0))
+        assertTrue(car.SetGear(1))
+        assertTrue(car.SetSpeed(30))
+        assertFalse(car.SetGear(4))
+        assertTrue(car.SetGear(0))
+        assertTrue(car.SetSpeed(20))
+        assertTrue(car.SetGear(2))
+        assertTrue(car.SetSpeed(50))
+        assertFalse(car.SetGear(-1))
+        assertTrue(car.SetGear(0))
+        assertFalse(car.SetGear(1))
+        assertTrue(car.SetGear(2))
+        assertTrue(car.SetGear(3))
+        assertTrue(car.SetGear(4))
+        assertTrue(car.SetGear(5))
+        assertTrue(car.SetGear(0))
+        assertTrue(car.SetSpeed(0))
+        assertTrue(car.SetGear(-1))
+        assertTrue(car.SetSpeed(20))
+        assertTrue(car.SetGear(0))
+        assertFalse(car.SetGear(1))
+        assertFalse(car.SetGear(2))
+        assertFalse(car.SetGear(3))
+        assertFalse(car.SetGear(4))
+        assertFalse(car.SetGear(5))
     }
 
     @Test
     fun testSetSpeed() {
-        assertFalse(car.SetSpeed(30)) // Can't set speed without turning on engine
-        car.TurnOnEngine()
-        assertTrue(car.SetSpeed(30)) // Can set speed after turning on engine
-        car.SetGear(1)
-        assertFalse(car.SetSpeed(40)) // Can't exceed speed limit for gear
-        assertTrue(car.SetSpeed(20)) // Can set valid speed
-        car.SetGear(0)
-        assertFalse(car.SetSpeed(10)) // Can't accelerate on neutral gear
+        assertFalse(car.SetSpeed(30))
+        assertTrue(car.TurnOnEngine())
+        assertTrue(car.SetGear(1))
+        assertTrue(car.SetSpeed(30))
+        assertTrue(car.SetGear(1))
+        assertFalse(car.SetSpeed(40))
+        assertTrue(car.SetSpeed(20))
+        assertTrue(car.SetGear(0))
+        assertFalse(car.SetSpeed(21))
+        assertTrue(car.SetSpeed(20))
     }
 }
