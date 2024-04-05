@@ -21,13 +21,16 @@ class CarTest {
     @Test
     fun testGetDirection() {
         assertEquals(Direction.STANDING_STILL, car.GetDirection())
+        car.TurnOnEngine()
         car.SetGear(-1)
         assertEquals(Direction.BACKWARD, car.GetDirection())
         car.SetSpeed(10)
         assertEquals(Direction.BACKWARD, car.GetDirection())
-        car.SetSpeed(0)
+        car.SetGear(0)
         assertEquals(Direction.STANDING_STILL, car.GetDirection())
         car.SetGear(1)
+        assertEquals(Direction.FORWARD, car.GetDirection())
+        car.SetSpeed(10)
         assertEquals(Direction.FORWARD, car.GetDirection())
     }
 

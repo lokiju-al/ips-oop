@@ -28,8 +28,8 @@ class Car {
 
     fun GetDirection(): Direction {
         return when {
-            currentSpeed == 0 -> Direction.STANDING_STILL
-            currentSpeed > 0 && currentGear == -1 -> Direction.BACKWARD
+            currentGear == -1 -> Direction.BACKWARD
+            currentSpeed == 0 && currentGear == 0 -> Direction.STANDING_STILL
             else -> Direction.FORWARD
         }
     }
@@ -48,7 +48,7 @@ class Car {
     }
 
     fun TurnOffEngine(): Boolean {
-        if (engineOn && currentSpeed == 0 && currentGear == Gear.NEUTRAL) {
+        if (currentSpeed == 0 && currentGear == 0) {
             engineOn = false
             return true
         }
@@ -56,11 +56,13 @@ class Car {
     }
 
     fun SetGear(gear: Int): Boolean {
-        val newGear = when (gear) {
-            in Gear.entries.toTypedArray().indices -> Gear.entries[gear]
+        val newGear = when {
+            gear == -1 && currentSpeed == 0 -> -1
+            gear == 0 -> 0
+            gear in 1..5 && this.GetDirection() !== Direction.BACKWARD -> gear
             else -> null
         }
-        if (newGear != null && (newGear == Gear.NEUTRAL || (engineOn && currentSpeed in newGear.range))) {
+        if (newGear != null && (newGear == 0 || (engineOn && currentSpeed in this.GetSpeedRangeForGear(gear)))) {
             currentGear = newGear
             return true
         }
@@ -68,10 +70,13 @@ class Car {
     }
 
     fun SetSpeed(speed: Int): Boolean {
-        return if (engineOn && currentGear != Gear.NEUTRAL && speed in currentGear.range) {
+        if (engineOn && currentGear == 0 && speed <= currentSpeed && speed in this.GetSpeedRangeForGear(0)) {
             currentSpeed = speed
-            true
-        } else false
+            return true
+        } else if (engineOn && speed in this.GetSpeedRangeForGear(currentGear)) {
+            currentSpeed = speed
+            return true
+        } else return false
     }
 }
 
@@ -123,6 +128,10 @@ fun main() {
                 } else {
                     println("Invalid input for speed.")
                 }
+            }
+
+            "exit" -> {
+                return
             }
 
             else -> println("Unknown command")
