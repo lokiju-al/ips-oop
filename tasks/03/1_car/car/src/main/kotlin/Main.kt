@@ -3,7 +3,7 @@ enum class Direction {
     BACKWARD,
     STANDING_STILL
 }
-
+// раскидать по файликам
 @Suppress("DEPRECATED_IDENTITY_EQUALS")
 class Car {
     private var isEngineOn: Boolean = false
@@ -22,14 +22,14 @@ class Car {
             5 -> 50..150
             else -> 0..0
         }
-    }
+    }// setspeed без параметра падает
 
     fun IsTurnedOn(): Boolean {
         return isEngineOn
     }
 
     fun GetDirection(): Direction {
-        return when {
+        return when { // убрать избыточность в тестах
             currentSpeed > 0 && isMovingBackward -> Direction.BACKWARD
             currentSpeed == 0 -> Direction.STANDING_STILL
             else -> Direction.FORWARD
@@ -58,8 +58,8 @@ class Car {
     }
 
     fun SetGear(gear: Int): Boolean {
-        val newGear = when {
-            gear == -1 && currentSpeed == 0 -> -1
+        val newGear = when { // isEngineOn вверх
+            gear == -1 && currentSpeed == 0 -> -1 // gear а не -1
             gear == 0 -> 0
             gear in 1..5 && !isMovingBackward -> gear
             else -> null
@@ -82,7 +82,7 @@ class Car {
             isMovingBackward = speed > 0 && currentGear == -1
             currentSpeed = speed
             return true
-        } else {
+        } else { // eубрать elsees
             return false
         }
     }

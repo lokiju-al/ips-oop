@@ -11,7 +11,7 @@ class CarTest {
     }
 
     @Test
-    fun testIsTurnedOn() {
+    fun testIsTurnedOn() {// testturnonengine
         car.TurnOffEngine()
         assertFalse(car.IsTurnedOn())
         car.TurnOnEngine()
@@ -19,7 +19,7 @@ class CarTest {
     }
 
     @Test
-    fun testGetDirection() {
+    fun testGetDirection() {//разделить двиг вперб двиг назад . стоим
         assertEquals(Direction.STANDING_STILL, car.GetDirection())
         car.TurnOnEngine()
         car.SetGear(-1)
@@ -147,6 +147,8 @@ class CarTest {
         assertTrue(car.SetGear(4))
         assertTrue(car.SetGear(5))
         assertTrue(car.SetGear(0))
+        assertTrue(car.SetSpeed(10))
+        assertTrue(car.SetGear(1))
         assertTrue(car.SetSpeed(0))
         assertTrue(car.SetGear(-1))
         assertTrue(car.SetSpeed(20))
@@ -160,6 +162,18 @@ class CarTest {
 
     @Test
     fun testSetSpeed() {
+        // initialize
+
+        // turn on engine
+        // set speed
+
+        // action
+
+        // engine off
+
+        // assert
+
+
         assertFalse(car.SetSpeed(30))
         assertTrue(car.TurnOnEngine())
         assertTrue(car.SetGear(1))
@@ -170,5 +184,10 @@ class CarTest {
         assertTrue(car.SetGear(0))
         assertFalse(car.SetSpeed(21))
         assertTrue(car.SetSpeed(20))
+        assertTrue(car.SetSpeed(0))
+        assertTrue(car.SetGear(-1))
+        assertTrue(car.SetSpeed(20))
+        assertTrue(car.SetGear(0))
+        assertTrue(car.SetSpeed(10))
     }
 }
