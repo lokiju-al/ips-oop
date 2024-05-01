@@ -1,25 +1,39 @@
-class CLineSegment : IShape {
+import kotlin.math.pow
+import kotlin.math.sqrt
+
+class CLineSegment(
+    private val startPoint: CPoint,
+    private val endPoint: CPoint,
+    private val outlineColor: String? = "fff",
+) : IShape {
     override fun GetArea(): Double {
-        TODO()
+        return 0.0
     }
 
     override fun GetOutlineColor(): Int {
-        TODO()
+        return Integer.decode("#" + outlineColor)
     }
 
     override fun GetPerimeter(): Double {
-        TODO()
+        return sqrt((endPoint.x - startPoint.x).pow(2) + (endPoint.y - startPoint.y).pow(2))
     }
 
     override fun ToString(): String {
-        TODO()
+        val builder = StringBuilder()
+        builder.appendLine("Type: line segment")
+        builder.appendLine("Start point: (${GetStartPoint().x}, ${GetStartPoint().y})")
+        builder.appendLine("End point: (${GetEndPoint().x}, ${GetEndPoint().y})")
+        builder.appendLine("Stroke Color: ${GetOutlineColor()}")
+        builder.appendLine("Area: ${"%.2f".format(GetArea())}")
+        builder.appendLine("Perimeter: ${"%.2f".format(GetPerimeter())}")
+        return builder.toString()
     }
 
     fun GetStartPoint(): CPoint {
-        TODO()
+        return startPoint
     }
 
     fun GetEndPoint(): CPoint {
-        TODO()
+        return endPoint
     }
 }

@@ -1,37 +1,56 @@
-class CRectangle : ISolidShape {
+class CRectangle (
+    private val leftTopCoordinate: CPoint,
+    private val width: Double,
+    private val height: Double,
+    private val outlineColor: String? = "fff",
+    private val fillColor: String?,
+) : ISolidShape {
     override fun GetArea(): Double {
-        TODO()
+        return width * height
     }
 
     override fun GetOutlineColor(): Int {
-        TODO()
+        return Integer.decode("#" + outlineColor)
     }
 
     override fun GetPerimeter(): Double {
-        TODO()
+        return (width + height) * 2
     }
 
     override fun ToString(): String {
-        TODO()
+        val builder = StringBuilder()
+        builder.appendLine("Type: rectangle")
+        builder.appendLine("Left top coordinate: (${leftTopCoordinate.x}, ${leftTopCoordinate.y})")
+        builder.appendLine("Right bottom coordinate: (${GetRightBottom().x}, ${GetRightBottom().y})")
+        builder.appendLine("Width: ${GetWidth()}")
+        builder.appendLine("Height: ${GetHeight()}")
+        builder.appendLine("Stroke Color: ${GetOutlineColor()}")
+        if (fillColor != null) {
+            builder.appendLine("Fill Color: ${GetFillColor()}")
+        }
+        builder.appendLine("Area: ${"%.2f".format(GetArea())}")
+        builder.appendLine("Perimeter: ${"%.2f".format(GetPerimeter())}")
+        return builder.toString()
     }
 
     override fun GetFillColor(): Int {
-        TODO()
+        return Integer.decode("#" + fillColor)
     }
 
     fun GetLeftTop(): CPoint {
-        TODO()
+        return leftTopCoordinate
     }
 
     fun GetRightBottom(): CPoint {
-        TODO()
+        val rightBottomCornerCoordinate = CPoint(leftTopCoordinate.x + width, leftTopCoordinate.y + height)
+        return rightBottomCornerCoordinate
     }
 
     fun GetWidth(): Double {
-        TODO()
+        return width
     }
 
     fun GetHeight(): Double {
-        TODO()
+        return height
     }
 }
