@@ -11,7 +11,7 @@ class CLineSegment(
     }
 
     override fun GetOutlineColor(): Int {
-        return Integer.decode("#" + outlineColor)
+        return Integer.decode("#$outlineColor")
     }
 
     override fun GetPerimeter(): Double {

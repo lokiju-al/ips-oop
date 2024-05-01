@@ -12,7 +12,7 @@ class CCircle (
     }
 
     override fun GetOutlineColor(): Int {
-        return Integer.decode("#" + outlineColor)
+        return Integer.decode("#$outlineColor")
     }
 
     override fun GetPerimeter(): Double {
@@ -22,7 +22,7 @@ class CCircle (
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: circle")
-        builder.appendLine("Center coordinate: (${GetCenter().x}, ${GetCenter().y})")
+        builder.appendLine("Center: (${GetCenter().x}, ${GetCenter().y})")
         builder.appendLine("Radius: ${GetRadius()}")
         builder.appendLine("Stroke Color: ${GetOutlineColor()}")
         if (fillColor != null) {
@@ -34,7 +34,7 @@ class CCircle (
     }
 
     override fun GetFillColor(): Int {
-        return Integer.decode("#" + fillColor)
+        return Integer.decode("#$fillColor")
     }
 
     fun GetCenter(): CPoint {

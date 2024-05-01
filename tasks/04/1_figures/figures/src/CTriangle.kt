@@ -16,7 +16,7 @@ class CTriangle (
     }
 
     override fun GetOutlineColor(): Int {
-        return Integer.decode("#" + outlineColor)
+        return Integer.decode("#$outlineColor")
     }
 
     override fun GetPerimeter(): Double {
@@ -42,7 +42,7 @@ class CTriangle (
     }
 
     override fun GetFillColor(): Int {
-        return Integer.decode("#" + fillColor)
+        return Integer.decode("#$fillColor")
     }
 
     fun GetVertex1(): CPoint {

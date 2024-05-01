@@ -10,7 +10,7 @@ class CRectangle (
     }
 
     override fun GetOutlineColor(): Int {
-        return Integer.decode("#" + outlineColor)
+        return Integer.decode("#$outlineColor")
     }
 
     override fun GetPerimeter(): Double {
@@ -20,8 +20,8 @@ class CRectangle (
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: rectangle")
-        builder.appendLine("Left top coordinate: (${leftTopCoordinate.x}, ${leftTopCoordinate.y})")
-        builder.appendLine("Right bottom coordinate: (${GetRightBottom().x}, ${GetRightBottom().y})")
+        builder.appendLine("Left top: (${GetLeftTop().x}, ${GetLeftTop().y})")
+        builder.appendLine("Right bottom: (${GetRightBottom().x}, ${GetRightBottom().y})")
         builder.appendLine("Width: ${GetWidth()}")
         builder.appendLine("Height: ${GetHeight()}")
         builder.appendLine("Stroke Color: ${GetOutlineColor()}")
@@ -34,7 +34,7 @@ class CRectangle (
     }
 
     override fun GetFillColor(): Int {
-        return Integer.decode("#" + fillColor)
+        return Integer.decode("#$fillColor")
     }
 
     fun GetLeftTop(): CPoint {
