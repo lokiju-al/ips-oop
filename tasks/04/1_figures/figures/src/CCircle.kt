@@ -4,7 +4,7 @@ import kotlin.math.pow
 class CCircle (
     private val center: CPoint,
     private val radius: Double,
-    private val outlineColor: String? = "fff",
+    private val outlineColor: String? = "ffffff",
     private val fillColor: String?,
 ) : ISolidShape {
     override fun GetArea(): Double {

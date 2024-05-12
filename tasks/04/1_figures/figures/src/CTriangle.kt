@@ -4,7 +4,7 @@ class CTriangle (
     private val vertex1: CPoint,
     private val vertex2: CPoint,
     private val vertex3: CPoint,
-    private val outlineColor: String? = "fff",
+    private val outlineColor: String? = "ffffff",
     private val fillColor: String?,
 ) : ISolidShape {
     override fun GetArea(): Double {

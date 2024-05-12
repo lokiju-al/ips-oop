@@ -4,7 +4,7 @@ import kotlin.math.sqrt
 class CLineSegment(
     private val startPoint: CPoint,
     private val endPoint: CPoint,
-    private val outlineColor: String? = "fff",
+    private val outlineColor: String? = "ffffff",
 ) : IShape {
     override fun GetArea(): Double {
         return 0.0

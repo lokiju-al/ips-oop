@@ -2,7 +2,7 @@ class CRectangle (
     private val leftTopCoordinate: CPoint,
     private val width: Double,
     private val height: Double,
-    private val outlineColor: String? = "fff",
+    private val outlineColor: String? = "ffffff",
     private val fillColor: String?,
 ) : ISolidShape {
     override fun GetArea(): Double {
