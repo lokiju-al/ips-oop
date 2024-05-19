@@ -5,7 +5,7 @@ class CTriangle (
     private val vertex2: CPoint,
     private val vertex3: CPoint,
     private val outlineColor: String? = "ffffff",
-    private val fillColor: String?,
+    private val fillColor: String? = null,
 ) : ISolidShape {
     override fun GetArea(): Double {
         val side1 = CLineSegment(vertex1, vertex2).GetPerimeter()
@@ -16,7 +16,12 @@ class CTriangle (
     }
 
     override fun GetOutlineColor(): Int {
-        return Integer.decode("#$outlineColor")
+        try {
+            return Integer.decode("#$outlineColor")
+        } catch (e: IllegalArgumentException) {
+            println("#$outlineColor is unacceptable outline color, I made it #ffffff")
+            return 16777215
+        }
     }
 
     override fun GetPerimeter(): Double {
@@ -29,10 +34,10 @@ class CTriangle (
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: triangle")
-        builder.appendLine("Vertex 1: (${GetVertex1().x}, ${GetVertex1().y})")
-        builder.appendLine("Vertex 2: (${GetVertex2().x}, ${GetVertex2().y})")
-        builder.appendLine("Vertex 3: (${GetVertex3().x}, ${GetVertex3().y})")
-        builder.appendLine("Stroke Color: ${GetOutlineColor()}")
+        builder.appendLine("Vertex 1: (${GetVertex1().xCoord}, ${GetVertex1().yCoord})")
+        builder.appendLine("Vertex 2: (${GetVertex2().xCoord}, ${GetVertex2().yCoord})")
+        builder.appendLine("Vertex 3: (${GetVertex3().xCoord}, ${GetVertex3().yCoord})")
+        builder.appendLine("Outline Color: ${GetOutlineColor()}")
         if (fillColor != null) {
             builder.appendLine("Fill Color: ${GetFillColor()}")
         }
@@ -42,7 +47,12 @@ class CTriangle (
     }
 
     override fun GetFillColor(): Int {
-        return Integer.decode("#$fillColor")
+        try {
+            return Integer.decode("#$fillColor")
+        } catch (e: IllegalArgumentException) {
+            println("#$fillColor is unacceptable fill color, I made it #000000")
+            return 0
+        }
     }
 
     fun GetVertex1(): CPoint {

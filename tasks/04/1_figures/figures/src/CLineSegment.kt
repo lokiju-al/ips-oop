@@ -11,19 +11,24 @@ class CLineSegment(
     }
 
     override fun GetOutlineColor(): Int {
-        return Integer.decode("#$outlineColor")
+        try {
+            return Integer.decode("#$outlineColor")
+        } catch (e: IllegalArgumentException) {
+            println("#$outlineColor is unacceptable outline color, I made it #ffffff")
+            return 16777215
+        }
     }
 
     override fun GetPerimeter(): Double {
-        return sqrt((endPoint.x - startPoint.x).pow(2) + (endPoint.y - startPoint.y).pow(2))
+        return sqrt((endPoint.xCoord - startPoint.xCoord).pow(2) + (endPoint.yCoord - startPoint.yCoord).pow(2))
     }
 
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: line segment")
-        builder.appendLine("Start point: (${GetStartPoint().x}, ${GetStartPoint().y})")
-        builder.appendLine("End point: (${GetEndPoint().x}, ${GetEndPoint().y})")
-        builder.appendLine("Stroke Color: ${GetOutlineColor()}")
+        builder.appendLine("Start point: (${GetStartPoint().xCoord}, ${GetStartPoint().yCoord})")
+        builder.appendLine("End point: (${GetEndPoint().xCoord}, ${GetEndPoint().yCoord})")
+        builder.appendLine("Outline Color: ${GetOutlineColor()}")
         builder.appendLine("Area: ${"%.2f".format(GetArea())}")
         builder.appendLine("Perimeter: ${"%.2f".format(GetPerimeter())}")
         return builder.toString()

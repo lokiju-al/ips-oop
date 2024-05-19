@@ -10,7 +10,12 @@ class CRectangle (
     }
 
     override fun GetOutlineColor(): Int {
-        return Integer.decode("#$outlineColor")
+        try {
+            return Integer.decode("#$outlineColor")
+        } catch (e: IllegalArgumentException) {
+            println("#$outlineColor is unacceptable outline color, I made it #ffffff")
+            return 16777215
+        }
     }
 
     override fun GetPerimeter(): Double {
@@ -20,11 +25,11 @@ class CRectangle (
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: rectangle")
-        builder.appendLine("Left top: (${GetLeftTop().x}, ${GetLeftTop().y})")
-        builder.appendLine("Right bottom: (${GetRightBottom().x}, ${GetRightBottom().y})")
+        builder.appendLine("Left top: (${GetLeftTop().xCoord}, ${GetLeftTop().yCoord})")
+        builder.appendLine("Right bottom: (${GetRightBottom().xCoord}, ${GetRightBottom().yCoord})")
         builder.appendLine("Width: ${GetWidth()}")
         builder.appendLine("Height: ${GetHeight()}")
-        builder.appendLine("Stroke Color: ${GetOutlineColor()}")
+        builder.appendLine("Outline Color: ${GetOutlineColor()}")
         if (fillColor != null) {
             builder.appendLine("Fill Color: ${GetFillColor()}")
         }
@@ -34,7 +39,12 @@ class CRectangle (
     }
 
     override fun GetFillColor(): Int {
-        return Integer.decode("#$fillColor")
+        try {
+            return Integer.decode("#$fillColor")
+        } catch (e: IllegalArgumentException) {
+            println("#$fillColor is unacceptable fill color, I made it #000000")
+            return 0
+        }
     }
 
     fun GetLeftTop(): CPoint {
@@ -42,7 +52,7 @@ class CRectangle (
     }
 
     fun GetRightBottom(): CPoint {
-        val rightBottomCornerCoordinate = CPoint(leftTopCoordinate.x + width, leftTopCoordinate.y + height)
+        val rightBottomCornerCoordinate = CPoint(leftTopCoordinate.xCoord + width, leftTopCoordinate.yCoord + height)
         return rightBottomCornerCoordinate
     }
 

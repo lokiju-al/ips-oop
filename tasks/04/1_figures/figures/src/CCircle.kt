@@ -12,7 +12,12 @@ class CCircle (
     }
 
     override fun GetOutlineColor(): Int {
-        return Integer.decode("#$outlineColor")
+        try {
+            return Integer.decode("#$outlineColor")
+        } catch (e: IllegalArgumentException) {
+            println("#$outlineColor is unacceptable outline color, I made it #ffffff")
+            return 16777215
+        }
     }
 
     override fun GetPerimeter(): Double {
@@ -22,9 +27,9 @@ class CCircle (
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: circle")
-        builder.appendLine("Center: (${GetCenter().x}, ${GetCenter().y})")
+        builder.appendLine("Center: (${GetCenter().xCoord}, ${GetCenter().yCoord})")
         builder.appendLine("Radius: ${GetRadius()}")
-        builder.appendLine("Stroke Color: ${GetOutlineColor()}")
+        builder.appendLine("Outline Color: ${GetOutlineColor()}")
         if (fillColor != null) {
             builder.appendLine("Fill Color: ${GetFillColor()}")
         }
@@ -34,7 +39,12 @@ class CCircle (
     }
 
     override fun GetFillColor(): Int {
-        return Integer.decode("#$fillColor")
+        try {
+            return Integer.decode("#$fillColor")
+        } catch (e: IllegalArgumentException) {
+            println("#$fillColor is unacceptable fill color, I made it #000000")
+            return 0
+        }
     }
 
     fun GetCenter(): CPoint {
