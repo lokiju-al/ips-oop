@@ -8,7 +8,7 @@ class CCircle (
     private val fillColor: String? = null,
 ) : ISolidShape {
     override fun GetArea(): Double {
-        return (PI * radius).pow(2)
+        return PI * radius.pow(2)
     }
 
     override fun GetOutlineColor(): Int {

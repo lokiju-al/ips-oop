@@ -1,5 +1,6 @@
 import java.io.File
 
+
 fun findFigureWithMaxArea(figures: List<IShape>): IShape? {
     return figures.maxByOrNull { it.GetArea() }
 }
