@@ -26,8 +26,8 @@ class CLineSegment(
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: line segment")
-        builder.appendLine("Start point: (${GetStartPoint().xCoord}, ${GetStartPoint().yCoord})")
-        builder.appendLine("End point: (${GetEndPoint().xCoord}, ${GetEndPoint().yCoord})")
+        builder.appendLine("Start point: (${"%.2f".format(GetStartPoint().xCoord)}, ${"%.2f".format(GetStartPoint().yCoord)})")
+        builder.appendLine("End point: (${"%.2f".format(GetEndPoint().xCoord)}, ${"%.2f".format(GetEndPoint().yCoord)})")
         builder.appendLine("Outline Color: ${GetOutlineColor()}")
         builder.appendLine("Area: ${"%.2f".format(GetArea())}")
         builder.appendLine("Perimeter: ${"%.2f".format(GetPerimeter())}")

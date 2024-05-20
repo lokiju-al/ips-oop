@@ -5,7 +5,7 @@ class CCircle (
     private val center: CPoint,
     private val radius: Double,
     private val outlineColor: String? = "ffffff",
-    private val fillColor: String?,
+    private val fillColor: String? = null,
 ) : ISolidShape {
     override fun GetArea(): Double {
         return (PI * radius).pow(2)
@@ -27,8 +27,8 @@ class CCircle (
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: circle")
-        builder.appendLine("Center: (${GetCenter().xCoord}, ${GetCenter().yCoord})")
-        builder.appendLine("Radius: ${GetRadius()}")
+        builder.appendLine("Center: (${"%.2f".format(GetCenter().xCoord)}, ${"%.2f".format(GetCenter().yCoord)})")
+        builder.appendLine("Radius: ${"%.2f".format(GetRadius())}")
         builder.appendLine("Outline Color: ${GetOutlineColor()}")
         if (fillColor != null) {
             builder.appendLine("Fill Color: ${GetFillColor()}")

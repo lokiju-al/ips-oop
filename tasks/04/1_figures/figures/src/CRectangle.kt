@@ -3,7 +3,7 @@ class CRectangle (
     private val width: Double,
     private val height: Double,
     private val outlineColor: String? = "ffffff",
-    private val fillColor: String?,
+    private val fillColor: String? = null,
 ) : ISolidShape {
     override fun GetArea(): Double {
         return width * height
@@ -25,10 +25,10 @@ class CRectangle (
     override fun ToString(): String {
         val builder = StringBuilder()
         builder.appendLine("Type: rectangle")
-        builder.appendLine("Left top: (${GetLeftTop().xCoord}, ${GetLeftTop().yCoord})")
-        builder.appendLine("Right bottom: (${GetRightBottom().xCoord}, ${GetRightBottom().yCoord})")
-        builder.appendLine("Width: ${GetWidth()}")
-        builder.appendLine("Height: ${GetHeight()}")
+        builder.appendLine("Left top: (${"%.2f".format(GetLeftTop().xCoord)}, ${"%.2f".format(GetLeftTop().yCoord)})")
+        builder.appendLine("Right bottom: (${"%.2f".format(GetRightBottom().xCoord)}, ${"%.2f".format(GetRightBottom().yCoord)})")
+        builder.appendLine("Width: ${"%.2f".format(GetWidth())}")
+        builder.appendLine("Height: ${"%.2f".format(GetHeight())}")
         builder.appendLine("Outline Color: ${GetOutlineColor()}")
         if (fillColor != null) {
             builder.appendLine("Fill Color: ${GetFillColor()}")

@@ -1,4 +1,4 @@
-rectangle 10w3 20.15 30.7 40.4 ff0 00f
-circle 10w3 20.15 40w4 ff0000 00ff00
-triangle 10w3 20w15 30.7 40.4 0.0 0.0 ff000w 00ff0w
-lineSegment 1w6 20.3 3.7 40.4 ffffff
+rectangle 10.3 20.15 30.7 40.4 ff0 00f
+circle 10.3 20.15 40.4 ff0000 00ff00
+triangle 10.3 20.15 30.7 40.4 0.0 0.0 ff0003 00ff02
+lineSegment 1.6 20.3 3.7 40.4 ffffff

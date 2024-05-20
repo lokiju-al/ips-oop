@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class CLineSegmentTest {
-    var lineSegment = CLineSegment(CPoint(0.0, 0.0), CPoint(3.0, 4.0))
+    private var lineSegment = CLineSegment(CPoint(0.0, 0.0), CPoint(3.0, 4.0))
     @Test
     fun GetPerimeterTest() {
         assertEquals(5.0, lineSegment.GetPerimeter())
@@ -37,8 +37,8 @@ class CLineSegmentTest {
         lineSegment = CLineSegment(CPoint(0.0, 0.0), CPoint(3.0, 4.0))
         var expectedString = """
             Type: line segment
-            Start point: (0.0, 0.0)
-            End point: (3.0, 4.0)
+            Start point: (0,00, 0,00)
+            End point: (3,00, 4,00)
             Outline Color: 16777215
             Area: 0,00
             Perimeter: 5,00
@@ -49,8 +49,8 @@ class CLineSegmentTest {
         lineSegment = CLineSegment(CPoint(2.7, 3.4), CPoint(3.0, 4.0), "000000")
         expectedString = """
             Type: line segment
-            Start point: (2.7, 3.4)
-            End point: (3.0, 4.0)
+            Start point: (2,70, 3,40)
+            End point: (3,00, 4,00)
             Outline Color: 0
             Area: 0,00
             Perimeter: 0,67

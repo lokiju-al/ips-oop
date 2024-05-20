@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class CTriangleTest {
-    var triangle = CTriangle(CPoint(0.0, 0.0), CPoint(0.0, 0.0), CPoint(0.0, 0.0), "ffffff", "ffffff")
+    private var triangle = CTriangle(CPoint(0.0, 0.0), CPoint(0.0, 0.0), CPoint(0.0, 0.0), "ffffff", "ffffff")
 
     @Test
     fun GetAreaTest() {
@@ -69,5 +69,23 @@ class CTriangleTest {
             
         """.trimIndent()
         assertEquals(expectedString, triangle.ToString())
+    }
+
+    @Test
+    fun GetFillColorTest() {
+        triangle = CTriangle(CPoint(0.0, 0.0), CPoint(2.0, 3.0), CPoint(1.0, 6.0))
+        assertEquals(0, triangle.GetFillColor())
+
+        triangle = CTriangle(CPoint(0.0, 0.0), CPoint(2.0, 3.0), CPoint(1.0, 6.0), "000000", "ffffff")
+        assertEquals(16777215, triangle.GetFillColor())
+
+        triangle = CTriangle(CPoint(0.0, 0.0), CPoint(2.0, 3.0), CPoint(1.0, 6.0), "", "")
+        assertEquals(0, triangle.GetFillColor())
+
+        triangle = CTriangle(CPoint(0.0, 0.0), CPoint(2.0, 3.0), CPoint(1.0, 6.0), "фывфы", "фывфы")
+        assertEquals(0, triangle.GetFillColor())
+
+        triangle = CTriangle(CPoint(0.0, 0.0), CPoint(2.0, 3.0), CPoint(1.0, 6.0), "123123", "123123")
+        assertEquals(1192227, triangle.GetFillColor())
     }
 }
