@@ -1,3 +1,4 @@
+import javafx.application.Application
 import java.io.File
 
 
@@ -9,10 +10,10 @@ fun findFigureWithMinPerimeter(figures: List<IShape>): IShape? {
     return figures.minByOrNull { it.GetPerimeter() }
 }
 
-fun main() {
+fun readFiguresFromFile(filePath: String): MutableList<IShape> {
     val inputFigures = mutableListOf<IShape>()
 
-    val inputFile = File("input.txt")
+    val inputFile = File(filePath)
     if (inputFile.exists()) {
         inputFile.forEachLine { line ->
             val tokens = line.split(" ")
@@ -66,8 +67,13 @@ fun main() {
         }
     } else {
         println("Input file not found")
-        return
     }
+
+    return inputFigures
+}
+
+fun main() {
+    val inputFigures = readFiguresFromFile("input.txt")
 
     if (inputFigures.isNotEmpty()) {
         val figureWithMaxArea = findFigureWithMaxArea(inputFigures)
@@ -86,6 +92,7 @@ fun main() {
         } else {
             println("No figures found")
         }
+        Application.launch(CCanvas::class.java)
     } else {
         println("No figures found in the input file")
     }
