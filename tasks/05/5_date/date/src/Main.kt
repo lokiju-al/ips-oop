@@ -52,7 +52,6 @@ fun main() {
         printDate(prefixDate)
         printDate(date)
 
-
         println()
         printDate(date2)
         postfixDate = date2++
