@@ -10,7 +10,6 @@ enum class WeekDay(val value: Int) {
 }
 
 class CDate {
-
     private var day: Int
     private var month: Month
     private var year: Int
@@ -19,9 +18,6 @@ class CDate {
         this.day = day
         this.month = month
         this.year = year
-        if (!isValid()) {
-            throw IllegalArgumentException("Invalid date")
-        }
     }
 
     constructor(timestamp: Int) {
@@ -35,7 +31,7 @@ class CDate {
             year++
         }
 
-        for (m in Month.values()) {
+        for (m in Month.entries) {
             val daysInMonth = daysInMonth(m, year)
             if (days < daysInMonth) {
                 month = m
@@ -63,7 +59,7 @@ class CDate {
 
     fun getWeekDay(): WeekDay {
         val daysFromEpoch = daysFromEpoch()
-        return WeekDay.values()[(daysFromEpoch + 4) % 7] // 1 Jan 1970 was a Thursday
+        return WeekDay.entries[(daysFromEpoch + 4) % 7]
     }
 
     fun isValid(): Boolean {
@@ -92,14 +88,40 @@ class CDate {
 
     private fun daysFromEpoch(): Int {
         var days = 0
-        for (y in 1970 until year) {
+        for (y in 1970..<year) {
             days += daysInYear(y)
         }
-        for (m in Month.values()) {
+        for (m in Month.entries) {
             if (m == month) break
             days += daysInMonth(m, year)
         }
         days += day - 1
         return days
+    }
+
+    operator fun inc(): CDate {
+        val date = CDate(day, month, year)
+        date.day++
+        if (date.day > daysInMonth(date.month, date.year)) {
+            date.day = 1
+            date.month = Month.entries.toTypedArray()[(date.month.ordinal + 1) % 12]
+            if (date.month == Month.JANUARY) {
+                date.year++
+            }
+        }
+        return date
+    }
+
+    operator fun dec(): CDate {
+        val date = CDate(day, month, year)
+        date.day--
+        if (date.day < 1) {
+            date.month = Month.entries.toTypedArray()[(date.month.ordinal - 1 + 12) % 12]
+            date.day = daysInMonth(date.month, date.year)
+            if (date.month == Month.DECEMBER) {
+                date.year--
+            }
+        }
+        return date
     }
 }
