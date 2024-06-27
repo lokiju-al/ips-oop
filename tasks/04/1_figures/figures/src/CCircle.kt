@@ -37,7 +37,7 @@ class CCircle (
         builder.appendLine("Perimeter: ${"%.2f".format(GetPerimeter())}")
         return builder.toString()
     }
-
+ // выдельить в абстрактные классы некоторые методы
     override fun GetFillColor(): Int {
         try {
             return Integer.decode("#$fillColor")

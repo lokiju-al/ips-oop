@@ -7,7 +7,7 @@ import javafx.scene.shape.Line
 import javafx.scene.shape.Polygon
 import javafx.scene.shape.Rectangle
 import javafx.stage.Stage
-
+// попробовать передать list
 class CCanvas : Application() {
     override fun start(stage: Stage) {
         val inputFigures = readFiguresFromFile("input.txt")

@@ -12,7 +12,7 @@ fun findFigureWithMinPerimeter(figures: List<IShape>): IShape? {
 
 fun readFiguresFromFile(filePath: String): MutableList<IShape> {
     val inputFigures = mutableListOf<IShape>()
-
+    // разделить на чтение строки и несколько функций для чтения фигур
     val inputFile = File(filePath)
     if (inputFile.exists()) {
         inputFile.forEachLine { line ->

@@ -72,7 +72,7 @@ class CCircleTest {
         """.trimIndent()
         assertEquals(expectedString, circle.ToString())
     }
-
+// добавить тесты минимальной фигуры
     @Test
     fun GetFillColorTest() {
         circle = CCircle(CPoint(0.0, 0.0), 0.0)
