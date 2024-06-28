@@ -16,13 +16,21 @@ fun readDateFromConsole(): CDate {
         }
     } catch (e: Exception) {
         println("Некорректная дата")
-        return CDate(0, Month.JANUARY, 0)
+        return CDate(-1)
     }
 }
 
 fun getDateInfo(date: CDate): String {
     return if (date.isValid()) {
         "${date.getDay().toString().padStart(2, '0')}.${date.getMonth().value.toString().padStart(2, '0')}.${date.getYear()}"
+    } else {
+        "INVALID"
+    }
+}
+
+fun getDayInfo(date: CDate): String {
+    return if (date.isValid()) {
+        date.getWeekDay().name
     } else {
         "INVALID"
     }
@@ -37,7 +45,7 @@ fun main() {
     while (true) {
         print("Введите дату: ")
         var date1 = readDateFromConsole()
-        println("Дата1: ${getDateInfo(date1)}, день недели: ${date1.getWeekDay().name}")
+        println("Дата1: ${getDateInfo(date1)}, день недели: ${getDayInfo(date1)}")
         println("${getDateInfo(date1)} + 3 = ${getDateInfo((date1 + 3))}")
         println("3 + ${getDateInfo(date1)} = ${getDateInfo((3 + date1))}")
         println("${getDateInfo(date1)} - 3 = ${getDateInfo((date1 - 3))}")
@@ -56,7 +64,7 @@ fun main() {
         date1 = date2
         print("Введите вторую дату: ")
         date2 = readDateFromConsole()
-        println("Дата2: ${getDateInfo(date2)}, день недели: ${date2.getWeekDay().name}")
+        println("Дата2: ${getDateInfo(date2)}, день недели: ${getDayInfo(date2)}")
         println("${getDateInfo(date1)} - ${getDateInfo(date2)} = ${(date1 - date2)}")
         println("${getDateInfo(date1)} == ${getDateInfo(date2)} => ${date1 == date2}")
         println("${getDateInfo(date1)} != ${getDateInfo(date2)} => ${date1 != date2}")
