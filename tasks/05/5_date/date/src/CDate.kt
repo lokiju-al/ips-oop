@@ -124,4 +124,112 @@ class CDate {
         }
         return date
     }
+
+    operator fun plus(days: Int): CDate {
+        var resultDay = this.day
+        var resultMonth = this.month
+        var resultYear = this.year
+        var remainingDays = days
+
+        while (remainingDays > 0) {
+            val daysInCurrentMonth = daysInMonth(resultMonth, resultYear)
+            if (resultDay + remainingDays <= daysInCurrentMonth) {
+                resultDay += remainingDays
+                remainingDays = 0
+            } else {
+                remainingDays -= (daysInCurrentMonth - resultDay + 1)
+                resultDay = 1
+                resultMonth = Month.entries.toTypedArray()[(resultMonth.ordinal + 1) % 12]
+                if (resultMonth == Month.JANUARY) {
+                    resultYear++
+                }
+            }
+        }
+
+        return CDate(resultDay, resultMonth, resultYear)
+    }
+
+    operator fun minus(days: Int): CDate {
+        var resultDay = this.day
+        var resultMonth = this.month
+        var resultYear = this.year
+        var remainingDays = days
+
+        while (remainingDays > 0) {
+            if (resultDay > remainingDays) {
+                resultDay -= remainingDays
+                remainingDays = 0
+            } else {
+                remainingDays -= resultDay
+                resultMonth = Month.entries.toTypedArray()[(resultMonth.ordinal - 1 + 12) % 12]
+                resultDay = daysInMonth(resultMonth, resultYear)
+                if (resultMonth == Month.DECEMBER) {
+                    resultYear--
+                }
+            }
+        }
+
+        return CDate(resultDay, resultMonth, resultYear)
+    }
+
+    operator fun minus(other: CDate): Int {
+        return this.daysFromEpoch() - other.daysFromEpoch()
+    }
+
+    fun plusAssign(days: Int) {
+        var remainingDays = days
+
+        while (remainingDays > 0) {
+            val daysInCurrentMonth = daysInMonth(this.month, this.year)
+            if (this.day + remainingDays <= daysInCurrentMonth) {
+                this.day += remainingDays
+                remainingDays = 0
+            } else {
+                remainingDays -= (daysInCurrentMonth - this.day + 1)
+                this.day = 1
+                this.month = Month.entries.toTypedArray()[(this.month.ordinal + 1) % 12]
+                if (this.month == Month.JANUARY) {
+                    this.year++
+                }
+            }
+        }
+    }
+
+    fun minusAssign(days: Int) {
+        var remainingDays = days
+
+        while (remainingDays > 0) {
+            if (this.day > remainingDays) {
+                this.day -= remainingDays
+                remainingDays = 0
+            } else {
+                remainingDays -= this.day
+                this.month = Month.entries.toTypedArray()[(this.month.ordinal - 1 + 12) % 12]
+                this.day = daysInMonth(this.month, this.year)
+                if (this.month == Month.DECEMBER) {
+                    this.year--
+                }
+            }
+        }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is CDate) return false
+        return day == other.day && month == other.month && year == other.year
+    }
+
+    override fun hashCode(): Int {
+        return day.hashCode() + month.hashCode() + year.hashCode()
+    }
+
+    operator fun compareTo(other: CDate): Int {
+        if (this.year != other.year) {
+            return this.year - other.year
+        }
+        if (this.month != other.month) {
+            return this.month.ordinal - other.month.ordinal
+        }
+        return this.day - other.day
+    }
 }

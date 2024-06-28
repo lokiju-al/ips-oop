@@ -20,42 +20,50 @@ fun readDateFromConsole(): CDate {
     }
 }
 
-fun printDate(date: CDate) {
-    println("Дата: ${date.getDay()}-${date.getMonth()}-${date.getYear()} (${date.getWeekDay().name})")
+fun getDateInfo(date: CDate): String {
+    return if (date.isValid()) {
+        "${date.getDay().toString().padStart(2, '0')}.${date.getMonth().value.toString().padStart(2, '0')}.${date.getYear()}"
+    } else {
+        "INVALID"
+    }
+}
+
+operator fun Int.plus(date: CDate): CDate {
+    return date + this
 }
 
 fun main() {
-    println("Введите дату в формате ДД.ММ.ГГГГ, количество дней с начала эпохи или пробел для даты начала эпохи")
+    println("Даты можно вводить любым из форматов: ДД.ММ.ГГГГ, количество дней с начала эпохи, пробел (для даты начала эпохи)")
     while (true) {
-        var date = readDateFromConsole()
-        var date2 = readDateFromConsole()
-
-        if (!date.isValid()) {
-            printDate(date)
-            break
-        }
-
-        printDate(date)
-        var prefixDate = --date
-        printDate(prefixDate)
-        printDate(date)
-
-        println()
-        printDate(date2)
-        var postfixDate = date2--
-        printDate(postfixDate)
-        printDate(date2)
-
-        println()
-        printDate(date)
-        prefixDate = ++date
-        printDate(prefixDate)
-        printDate(date)
-
-        println()
-        printDate(date2)
-        postfixDate = date2++
-        printDate(postfixDate)
-        printDate(date2)
+        print("Введите дату: ")
+        var date1 = readDateFromConsole()
+        println("Дата1: ${getDateInfo(date1)}, день недели: ${date1.getWeekDay().name}")
+        println("${getDateInfo(date1)} + 3 = ${getDateInfo((date1 + 3))}")
+        println("3 + ${getDateInfo(date1)} = ${getDateInfo((3 + date1))}")
+        println("${getDateInfo(date1)} - 3 = ${getDateInfo((date1 - 3))}")
+        var date2 = date1
+        date1 += 3
+        println("(${getDateInfo(date2)} += 3) = ${getDateInfo((date1))}")
+        date1 = date2
+        date1 -= 3
+        println("(${getDateInfo(date2)} -= 3) = ${getDateInfo((date1))}")
+        date1 = date2
+        date2 = date1--
+        println("((${getDateInfo(date2)})--) = ${getDateInfo(date2)}")
+        println("(${getDateInfo(date2)})-- = ${getDateInfo(date1)}")
+        date1 = date2
+        println("--(${getDateInfo(date2)}) = ${getDateInfo(--date1)}")
+        date1 = date2
+        print("Введите вторую дату: ")
+        date2 = readDateFromConsole()
+        println("Дата2: ${getDateInfo(date2)}, день недели: ${date2.getWeekDay().name}")
+        println("${getDateInfo(date1)} - ${getDateInfo(date2)} = ${(date1 - date2)}")
+        println("${getDateInfo(date1)} == ${getDateInfo(date2)} => ${date1 == date2}")
+        println("${getDateInfo(date1)} != ${getDateInfo(date2)} => ${date1 != date2}")
+        println("${getDateInfo(date1)} >= ${getDateInfo(date2)} => ${date1 >= date2}")
+        println("${getDateInfo(date1)} <= ${getDateInfo(date2)} => ${date1 <= date2}")
+        println("${getDateInfo(date1)} > ${getDateInfo(date2)} => ${date1 > date2}")
+        println("${getDateInfo(date1)} < ${getDateInfo(date2)} => ${date1 < date2}")
+        break
     }
 }
