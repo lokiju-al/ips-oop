@@ -22,7 +22,9 @@ fun readDateFromConsole(): CDate {
 
 fun getDateInfo(date: CDate): String {
     return if (date.isValid()) {
-        "${date.getDay().toString().padStart(2, '0')}.${date.getMonth().value.toString().padStart(2, '0')}.${date.getYear()}"
+        "${date.getDay().toString().padStart(2, '0')}.${
+            date.getMonth().value.toString().padStart(2, '0')
+        }.${date.getYear()}"
     } else {
         "INVALID"
     }
@@ -42,36 +44,39 @@ operator fun Int.plus(date: CDate): CDate {
 
 fun main() {
     println("Даты можно вводить любым из форматов: ДД.ММ.ГГГГ, количество дней с начала эпохи, пробел (для даты начала эпохи)")
-    while (true) {
-        print("Введите дату: ")
-        var date1 = readDateFromConsole()
-        println("Дата1: ${getDateInfo(date1)}, день недели: ${getDayInfo(date1)}")
-        println("${getDateInfo(date1)} + 3 = ${getDateInfo((date1 + 3))}")
-        println("3 + ${getDateInfo(date1)} = ${getDateInfo((3 + date1))}")
-        println("${getDateInfo(date1)} - 3 = ${getDateInfo((date1 - 3))}")
-        var date2 = date1
-        date1 += 3
-        println("(${getDateInfo(date2)} += 3) = ${getDateInfo((date1))}")
-        date1 = date2
-        date1 -= 3
-        println("(${getDateInfo(date2)} -= 3) = ${getDateInfo((date1))}")
-        date1 = date2
-        date2 = date1--
-        println("((${getDateInfo(date2)})--) = ${getDateInfo(date2)}")
-        println("(${getDateInfo(date2)})-- = ${getDateInfo(date1)}")
-        date1 = date2
-        println("--(${getDateInfo(date2)}) = ${getDateInfo(--date1)}")
-        date1 = date2
-        print("Введите вторую дату: ")
-        date2 = readDateFromConsole()
-        println("Дата2: ${getDateInfo(date2)}, день недели: ${getDayInfo(date2)}")
-        println("${getDateInfo(date1)} - ${getDateInfo(date2)} = ${(date1 - date2)}")
-        println("${getDateInfo(date1)} == ${getDateInfo(date2)} => ${date1 == date2}")
-        println("${getDateInfo(date1)} != ${getDateInfo(date2)} => ${date1 != date2}")
-        println("${getDateInfo(date1)} >= ${getDateInfo(date2)} => ${date1 >= date2}")
-        println("${getDateInfo(date1)} <= ${getDateInfo(date2)} => ${date1 <= date2}")
-        println("${getDateInfo(date1)} > ${getDateInfo(date2)} => ${date1 > date2}")
-        println("${getDateInfo(date1)} < ${getDateInfo(date2)} => ${date1 < date2}")
-        break
-    }
+    print("Введите дату: ")
+    var date1 = readDateFromConsole()
+    println("Дата1: ${getDateInfo(date1)}, день недели: ${getDayInfo(date1)}")
+    println("${getDateInfo(date1)} + 3 = ${getDateInfo((date1 + 3))}")
+    println("3 + ${getDateInfo(date1)} = ${getDateInfo((3 + date1))}")
+    println("${getDateInfo(date1)} - 3 = ${getDateInfo((date1 - 3))}")
+    var date2 = date1
+    date1 += 3
+    println("(${getDateInfo(date2)} += 3) = ${getDateInfo((date1))}")
+    date1 = date2
+    date1 -= 3
+    println("(${getDateInfo(date2)} -= 3) = ${getDateInfo((date1))}")
+    date1 = date2
+    date2 = date1--
+    println("((${getDateInfo(date2)})--) = ${getDateInfo(date2)}")
+    println("(${getDateInfo(date2)})-- = ${getDateInfo(date1)}")
+    date1 = date2
+    println("--(${getDateInfo(date2)}) = ${getDateInfo(--date1)}")
+    date1 = date2
+    date2 = date1++
+    println("((${getDateInfo(date2)})++) = ${getDateInfo(date2)}")
+    println("(${getDateInfo(date2)})++ = ${getDateInfo(date1)}")
+    date1 = date2
+    println("++(${getDateInfo(date2)}) = ${getDateInfo(++date1)}")
+    date1 = date2
+    print("Введите вторую дату: ")
+    date2 = readDateFromConsole()
+    println("Дата2: ${getDateInfo(date2)}, день недели: ${getDayInfo(date2)}")
+    println("${getDateInfo(date1)} - ${getDateInfo(date2)} = ${(date1 - date2)}")
+    println("${getDateInfo(date1)} == ${getDateInfo(date2)} => ${date1 == date2}")
+    println("${getDateInfo(date1)} != ${getDateInfo(date2)} => ${date1 != date2}")
+    println("${getDateInfo(date1)} >= ${getDateInfo(date2)} => ${date1 >= date2}")
+    println("${getDateInfo(date1)} <= ${getDateInfo(date2)} => ${date1 <= date2}")
+    println("${getDateInfo(date1)} > ${getDateInfo(date2)} => ${date1 > date2}")
+    println("${getDateInfo(date1)} < ${getDateInfo(date2)} => ${date1 < date2}")
 }

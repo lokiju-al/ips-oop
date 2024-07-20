@@ -9,11 +9,12 @@ enum class WeekDay(val value: Int) {
     THURSDAY(4), FRIDAY(5), SATURDAY(6)
 }
 
+//переименовать в Date
 class CDate {
     private var day: Int
     private var month: Month
     private var year: Int
-
+//лучше хранить timestamp
     constructor(day: Int, month: Month, year: Int) {
         this.day = day
         this.month = month
@@ -59,6 +60,7 @@ class CDate {
 
     fun getWeekDay(): WeekDay {
         val daysFromEpoch = daysFromEpoch()
+        //не использовать магические числа
         return WeekDay.entries[(daysFromEpoch + 4) % 7]
     }
 
@@ -73,6 +75,7 @@ class CDate {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
     }
 
+    //методы не зависящие от состояния объекта должны быть статическими
     private fun daysInMonth(month: Month, year: Int): Int {
         return when (month) {
             Month.JANUARY, Month.MARCH, Month.MAY, Month.JULY,

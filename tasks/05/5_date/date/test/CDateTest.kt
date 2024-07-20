@@ -46,18 +46,22 @@ class CDateTest {
     @Test
     fun incDec() {
         var date = CDate(2, Month.JANUARY, 1970)
+
         date++
         assertEquals(3, date.getDay())
         assertEquals(Month.JANUARY, date.getMonth())
         assertEquals(1970, date.getYear())
+
         ++date
         assertEquals(4, date.getDay())
         assertEquals(Month.JANUARY, date.getMonth())
         assertEquals(1970, date.getYear())
+
         date--
         assertEquals(3, date.getDay())
         assertEquals(Month.JANUARY, date.getMonth())
         assertEquals(1970, date.getYear())
+
         --date
         assertEquals(2, date.getDay())
         assertEquals(Month.JANUARY, date.getMonth())
@@ -67,27 +71,34 @@ class CDateTest {
     @Test
     fun plusMinus() {
         var date = CDate(4, Month.MAY, 1970)
+
         date = date + 3
         assertEquals(7, date.getDay())
         assertEquals(Month.MAY, date.getMonth())
         assertEquals(1970, date.getYear())
+
         date = date - 3
         assertEquals(4, date.getDay())
         assertEquals(Month.MAY, date.getMonth())
         assertEquals(1970, date.getYear())
+
         date = 3 + date
         assertEquals(7, date.getDay())
         assertEquals(Month.MAY, date.getMonth())
         assertEquals(1970, date.getYear())
+
         date += 3
         assertEquals(10, date.getDay())
         assertEquals(Month.MAY, date.getMonth())
         assertEquals(1970, date.getYear())
+
         date -= 3
         assertEquals(7, date.getDay())
         assertEquals(Month.MAY, date.getMonth())
         assertEquals(1970, date.getYear())
+
         assertEquals(0, date - CDate(7, Month.MAY, 1970))
+        assertEquals(-2932896, CDate() - CDate(31, Month.DECEMBER, 9999))
     }
 
     @Test
