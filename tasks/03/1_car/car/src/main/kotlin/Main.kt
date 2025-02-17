@@ -82,7 +82,7 @@ class Car {
             isMovingBackward = speed > 0 && currentGear == -1
             currentSpeed = speed
             return true
-        } else { // eубрать elsees
+        } else { // убрать elsees
             return false
         }
     }
