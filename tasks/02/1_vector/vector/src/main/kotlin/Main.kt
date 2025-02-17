@@ -14,7 +14,7 @@ fun readDoubleArrayFromInput(): DoubleArray {
 	return numberList.toDoubleArray()
 }
 
-//отдельно модификация и отдельно и печать
+//отдельно модификация и отдельно печать
 fun modifyAndPrintArray(array: DoubleArray) {
 	val minElement = array.minOrNull()
 	print("Modified input string (variant 2): ")
