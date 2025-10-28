@@ -34,8 +34,8 @@ class Dictionary(private val dictionaryFile: File) {
         }
     }
 
-    fun translate(phrase: String): String? {
-        return dictionary[phrase.lowercase(Locale.getDefault())]
+    fun translate(englishPhrase: String): String? {
+        return dictionary[englishPhrase.lowercase(Locale.getDefault())]
     }
 
     fun addTranslation(englishPhrase: String, russianTranslation: String) {

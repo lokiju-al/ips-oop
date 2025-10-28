@@ -9,11 +9,11 @@ fun main(args: Array<String>) {
         return
     }
 
-    val pathToDictionary = "${System.getProperty("user.dir")}/src/main/kotlin/lab_2/dictionary_2_3_2/dictionaries/"
-    val dictionaryFile = File("$pathToDictionary${args[0]}")
+    val pathToDictionary = "${System.getProperty("user.dir")}/src/main/kotlin/lab_2/dictionary_2_3_2/dictionaries"
+    val dictionaryFile = File(pathToDictionary, args[0])
     val dictionary = Dictionary(dictionaryFile)
 
-    println("Введите слово или словосочетание на английском, чтобы получить перевод (для завершения введите строку '...'):")
+    println("Введите слово или словосочетание на английском, чтобы получить перевод (для завершения введите строку '...')")
 
     while (true) {
         print(">")
@@ -46,13 +46,15 @@ fun main(args: Array<String>) {
         val saveChoice = readlnOrNull()?.trim()?.lowercase(Locale.getDefault())
 
         if (saveChoice == "y") {
-            dictionary.saveDictionary()
+            try {
+                dictionary.saveDictionary()
 
-            print("Изменения сохранены. До свидания.")
+                print("Изменения сохранены. До свидания.")
+            } catch (e: Exception) {
+                println("Ошибка при сохранении словаря: ${e.message}")
+            }
         } else {
             print("Изменения не сохранены. До свидания.")
         }
-    } else {
-        print("Изменений в словаре не было. До свидания.")
     }
 }
