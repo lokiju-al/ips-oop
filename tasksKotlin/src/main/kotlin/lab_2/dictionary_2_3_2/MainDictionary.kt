@@ -31,6 +31,7 @@ fun main(args: Array<String>) {
 
                     if (userTranslation.isNotEmpty()) {
                         dictionary.addTranslation(inputString, userTranslation)
+                        println("Слово “$inputString” сохранено в словаре как “$userTranslation”.")
                     } else {
                         println("Слово “$inputString” проигнорировано.")
                     }

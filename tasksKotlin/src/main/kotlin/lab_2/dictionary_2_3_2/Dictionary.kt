@@ -41,7 +41,6 @@ class Dictionary(private val dictionaryFile: File) {
     fun addTranslation(englishPhrase: String, russianTranslation: String) {
         dictionary[englishPhrase.lowercase(Locale.getDefault())] = russianTranslation
         isModified = true
-        println("Слово “$englishPhrase” сохранено в словаре как “$russianTranslation”.")
     }
 
     fun hasModifications(): Boolean = isModified
