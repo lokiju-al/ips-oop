@@ -1,5 +1,2 @@
 cat|кот, кошка
 ball|мяч
-meat|мясо
-the red square|Красная Площадь
-snow|снег
