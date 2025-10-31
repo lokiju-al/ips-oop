@@ -4,7 +4,6 @@ import java.io.File
 import java.util.*
 
 class Dictionary(private val dictionaryFile: File) {
-    private val dictionary = mutableMapOf<String, String>()
     private val englishToRussian = mutableMapOf<String, MutableSet<String>>()
     private val russianToEnglish = mutableMapOf<String, MutableSet<String>>()
     private var isModified = false
@@ -18,18 +17,17 @@ class Dictionary(private val dictionaryFile: File) {
             dictionaryFile.forEachLine { line ->
                 val parts = line.split("|", limit = 2)
                 if (parts.size == 2) {
-                    dictionary[parts[0].trim()] = parts[1].trim()
-                    val english = parts[0].trim().lowercase(Locale.getDefault())
+                    val english = parts[0].trim()
                     val russian = parts[1].trim()
-                    addTranslationInternal(english, russian)
+                    addPhraseToDictionary(english, russian)
                 }
             }
         }
     }
 
-    private fun addTranslationInternal(english: String, russian: String) {
-        englishToRussian.getOrPut(english) { mutableSetOf() }.add(russian)
-        russianToEnglish.getOrPut(russian) { mutableSetOf() }.add(english)
+    private fun addPhraseToDictionary(english: String, russian: String) {
+        englishToRussian.getOrPut(english.lowercase(Locale.getDefault())) { mutableSetOf() }.add(russian)
+        russianToEnglish.getOrPut(russian) { mutableSetOf() }.add(english.lowercase(Locale.getDefault()))
     }
 
     fun saveDictionary() {
@@ -50,12 +48,16 @@ class Dictionary(private val dictionaryFile: File) {
         return if (isEnglishPhrase) {
             englishToRussian[phrase.lowercase(Locale.getDefault())] ?: emptySet()
         } else {
-            russianToEnglish[phrase.lowercase(Locale.getDefault())] ?: emptySet()
+            russianToEnglish[phrase] ?: emptySet()
         }
     }
 
-    fun addTranslation(phrase: String, translation: String) {
-        addTranslationInternal(phrase.lowercase(Locale.getDefault()), translation)
+    fun addTranslation(phrase: String, translation: String, isEnglishPhrase: Boolean) {
+        if (isEnglishPhrase) {
+            addPhraseToDictionary(phrase, translation)
+        } else {
+            addPhraseToDictionary(translation, phrase)
+        }
         isModified = true
     }
 
